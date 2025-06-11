@@ -14,96 +14,37 @@ const App = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
   const [showRestartButton, setShowRestartButton] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // For API call loading
+  const [isLoading, setIsLoading] = useState(true); // Set to true initially to load scenarios
+  const [allGameScenarios, setAllGameScenarios] = useState(null); // To store loaded scenarios
 
   // Fallback for Canvas-provided global variables when running locally
-  // These will be defined by Canvas when deployed there, but not locally.
   const canvasAppId = typeof __app_id !== 'undefined' ? __app_id : 'local-dev-app-id';
   const canvasFirebaseConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
   const canvasInitialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : '';
 
+  // Effect to load game scenarios from JSON
+  useEffect(() => {
+    const loadScenarios = async () => {
+      try {
+        setIsLoading(true);
+        // Fetch from the public folder
+        const response = await fetch('/scenarios.json');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setAllGameScenarios(data);
+      } catch (error) {
+        console.error("Failed to load scenarios:", error);
+        // Handle error, e.g., display a message to the user
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  // Game scenarios, each leading to a disbarment in a unique way
-  const gameScenarios = {
-    start: {
-      text: "You are a rising defense attorney, fresh off a major win. Your next case involves a high-profile client accused of financial fraud. The evidence is complex, and the stakes are incredibly high. Your reputation, and perhaps more, hinges on this case. What's your first move to prepare?",
-      options: [
-        { text: "Dive deep into the client's financial records, cross-referencing every detail.", next: "financialRecords" },
-        { text: "Focus on building a strong relationship with your client, gaining their absolute trust.", next: "clientRelationship" },
-        { text: "Begin extensive research into legal precedents for complex fraud cases.", next: "legalResearch" },
-      ],
-    },
-    financialRecords: {
-      text: "You've uncovered a discrepancy! A large sum of client funds was moved to a personal account, then back, several times. Your client insists it was a 'temporary transfer' for an emergency, and promises it's all there now. This could look bad, but your client is persuasive. What do you do?",
-      options: [
-        { text: "Document the discrepancy and urge your client to immediately rectify it with a clear, verifiable explanation for the court.", next: "rectifyFunds" },
-        { text: "Dismiss it as a minor oversight and focus on other aspects of the defense, trusting your client's explanation.", next: "minorOversight" },
-        { text: "Suggest your client 'clarify' the accounting to make the transfers appear legitimate.", next: "clarifyAccounting" },
-      ],
-    },
-    clientRelationship: {
-      text: "Your client, a charismatic but enigmatic figure, has developed immense trust in you. They've hinted at 'creative' ways to handle certain pieces of evidence, suggesting they might expedite the process. They assure you it's 'all in the spirit of justice.' How do you respond?",
-      options: [
-        { text: "Firmly reiterate the importance of strict adherence to legal and ethical guidelines.", next: "strictEthics" },
-        { text: "Listen to their suggestions, considering if any 'creative' approaches are ethically permissible.", next: "considerCreative" },
-        { text: "Tell them you'll explore all options, subtly implying you're open to their 'creativity.'", next: "exploreOptions" },
-      ],
-    },
-    legalResearch: {
-      text: "During your research, you stumble upon an obscure loophole that, if stretched, could potentially dismiss a key piece of evidence against your client. It's a high-risk, high-reward move, bordering on legal acrobatics. Do you pursue it?",
-      options: [
-        { text: "Present the loophole to the judge, fully disclosing its tenuous nature and arguing its merits.", next: "presentLoophole" },
-        { text: "Attempt to exploit the loophole without drawing attention to its fragile foundation.", next: "exploitLoophole" },
-        { text: "Decide against it, fearing it might backfire and damage your credibility.", next: "avoidLoophole" },
-      ],
-    },
-    // Disbarment paths
-    rectifyFunds: {
-      text: "Despite your efforts to rectify the funds and explain, an unexpected random audit (as described in NJ's program) flags the historical transfers. The audit uncovers a pattern of commingling and apparent misappropriation. The bar association finds that even with 'good intentions,' your failure to report the initial discovery and ensure absolute segregation of client funds constitutes a knowing violation. Your client's subsequent 'clarification' attempts are seen as obstructive.",
-      options: [],
-      disbarment: "Disbarred: Automatic disbarment for knowing misappropriation of client funds. Your attempts to 'fix' it were too late, and the bar's zero-tolerance policy on trust accounts prevails. Your client's subsequent 'clarification' attempts are seen as obstructive, and you are implicated in covering up the issue.",
-    },
-    minorOversight: {
-      text: "You dismiss the discrepancy, confident in your client's honesty. However, during discovery, opposing counsel finds evidence of the 'temporary transfer' and frames it as a deliberate act of embezzlement. Your initial dismissal of the issue is seen by the court as a lack of due diligence and potentially aiding in commingling client funds. Your client's subsequent 'creative' accounting, which you allowed, is now seen as intentional deception.",
-      options: [],
-      disbarment: "Disbarred: Found to have aided in the commingling and potential misappropriation of client funds by overlooking obvious discrepancies. Your judgment is questioned, and you are deemed unfit to handle client finances. The 'creative' accounting you allowed is presented as your intent to deceive, leading to your disbarment.",
-    },
-    clarifyAccounting: {
-      text: "You instruct your client to 'clarify' the accounting. The changes are subtle but deceptive. During cross-examination, a forensic accountant from the prosecution meticulously dismantles the 'clarified' records, exposing the fabrications. The judge is furious, citing your direct involvement in presenting false information to the court. The bar association starts an immediate investigation for fraud and deceit.",
-      options: [],
-      disbarment: "Disbarred: For knowingly engaging in dishonesty, fraud, and misrepresentation by instructing your client to fabricate financial records. Your actions are deemed a direct subversion of justice, leading to immediate and permanent disbarment.",
-    },
-    strictEthics: {
-      text: "You firmly uphold ethical boundaries. Your client, feeling frustrated by your 'lack of flexibility,' begins making their own 'creative' moves outside your advice, including making false statements to the press. When these statements are exposed, your client attempts to shift blame onto you, claiming you advised them to mislead the public. Though you have a clear paper trail of ethical advice, the public scandal and your client's blatant lies, combined with intense media scrutiny, lead to a disciplinary investigation. The bar, facing public pressure, decides to make an example, citing your association with such a 'deceptive' client and your 'failure to control' their actions as a breach of professional conduct, even though you acted ethically.",
-      options: [],
-      disbarment: "Disbarred: Although you adhered strictly to ethical guidelines, your high-profile client's outrageous and public lies, coupled with intense media pressure and the client's false accusations against you, lead the bar to disbar you. They cite your 'failure to control' a 'deceptive' client in a high-stakes case as a breach of your professional responsibility and a detriment to the public's trust in the legal system. Your ethical conduct is not enough to save you from the ensuing scandal.",
-    },
-    considerCreative: {
-      text: "You entertain your client's ideas, trying to find an ethical angle. Your client, emboldened, takes a drastic step: they forge a document to 'prove' their innocence, believing you tacitly approved their 'creativity.' The forgery is quickly discovered by opposing counsel. When questioned, your client claims you were fully aware and complicit, stating you told them to 'explore all options' and 'be creative.' Despite your denial, the court finds your encouragement of 'creative' solutions led directly to the forgery and constitutes a lack of candor and aiding in criminal activity.",
-      options: [],
-      disbarment: "Disbarred: For aiding and abetting in the presentation of falsified evidence and a profound lack of candor with the court. Your openness to 'creative' solutions created an environment where your client felt empowered to commit forgery, leading to your professional ruin.",
-    },
-    exploreOptions: {
-      text: "Your subtle implication is taken as a green light. Your client, a master manipulator, orchestrates a bizarre public stunt outside the courthouse, making wildly false claims about the case and implicating the judge and prosecution in a conspiracy. The stunt garners massive media attention, and the judge, furious, holds you accountable for your client's actions, citing your implied encouragement and failure to control their behavior. The bar association immediately launches an investigation into your conduct, accusing you of encouraging prejudicial publicity and bringing the profession into disrepute.",
-      options: [],
-      disbarment: "Disbarred: For encouraging outrageous and prejudicial public conduct by your client, leading to a media circus that undermines the integrity of the judicial process. Your failure to control your client and your subtle implications are seen as direct complicity in their 'bizarre' actions, resulting in your disbarment.",
-    },
-    presentLoophole: {
-      text: "You present the loophole. The judge, while initially intrigued, finds your argument to be an 'insult to judicial intelligence,' citing its tenuous foundation. They rule against you, and in their written opinion, they lambaste your 'audacious attempt to pervert justice through legal gymnastics.' The bar association takes note of the judge's strong rebuke, viewing your aggressive, borderline-frivolous attempt to exploit a loophole as conduct prejudicial to the administration of justice.",
-      options: [],
-      disbarment: "Disbarred: For engaging in conduct prejudicial to the administration of justice and presenting a frivolous legal argument with deceptive intent. Your aggressive, high-risk strategy backfired spectacularly, leading to a judicial rebuke and disbarment for undermining the court's dignity.",
-    },
-    exploitLoophole: {
-      text: "You attempt to subtly exploit the loophole. Opposing counsel, however, is sharp and quickly identifies your tactic, exposing it as a deceptive attempt to mislead the court by obscuring the true intent of the obscure rule. The judge, feeling manipulated, expresses severe disappointment and initiates disciplinary proceedings against you for lack of candor and undermining the integrity of the court.",
-      options: [],
-      disbarment: "Disbarred: For deliberate deception and lack of candor with the court. Your attempt to 'exploit' a legal loophole without full disclosure is seen as a direct attack on the judicial process, resulting in your disbarment.",
-    },
-    avoidLoophole: {
-      text: "You decide against the loophole, prioritizing your credibility. However, in a desperate attempt to save their case, your client, unbeknownst to you, mails a feces-filled Pringles can to the judge's chambers, claiming it's a 'gift' from a 'secret admirer' who knows the judge is biased. The media coverage is immediate and sensational, completely derailing the trial. While you had no knowledge of this act, the bar association, seeking to protect the public image of the legal profession, holds you responsible for failing to anticipate or control your 'unstable' client, stating your 'lack_of_judgment' in dealing with such a character brings discredit to the bar.",
-      options: [],
-      disbarment: "Disbarred: For a profound lack of judgment in client selection and control, leading to a bizarre public spectacle that brought extreme discredit to the legal profession. Despite your personal innocence in the Pringles can incident, your association with such an outrageous act, and your failure to prevent it, lead to your disbarment.",
-    },
-  };
+    loadScenarios();
+  }, []); // Run only once on component mount
+
 
   // Function to save game history to Firestore
   const saveGameHistory = useCallback(async (currentScenario, chosenOptionText) => {
@@ -184,52 +125,57 @@ const App = () => {
 
   // Function to start the game
   const startGame = useCallback(async () => {
+    if (!allGameScenarios) return; // Ensure scenarios are loaded
+
     setShowWelcomeMessage(false);
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
     try {
-      // Load history and initialize with the last known scenario, or start fresh
       const history = await loadGameHistory();
       if (history.length > 0) {
         const lastEntry = history[history.length - 1];
         // Attempt to find the next scenario based on the last known state, or restart if at disbarment
         let nextStep = 'start';
-        // A more robust way to find the last valid scenario would be needed for complex saves
-        // For simplicity, if the last state was a disbarment or an invalid next step, we restart.
-        if (gameScenarios[lastEntry.chosenOption] && !gameScenarios[lastEntry.chosenOption].disbarment) {
-            nextStep = lastEntry.chosenOption; // This part is a simplified assumption
-        }
-
-        if (gameScenarios[nextStep] && !gameScenarios[nextStep].disbarment) {
-           setScenario(gameScenarios[nextStep]);
-           setChoices(gameScenarios[nextStep].options);
+        // This part is a simplified assumption; a real save/load might store current scenario key
+        // For now, if the last entry was a choice, we assume the next state is that choice's 'next' property.
+        // If the game ended in disbarment, or if it's the very first time loading, start fresh.
+        if (lastEntry.chosenOption && allGameScenarios[lastEntry.chosenOption] && !allGameScenarios[lastEntry.chosenOption].disbarment) {
+           // This logic is flawed for true state restoration; for a simple "continue" from last choice, it works if the key directly maps to a scenario.
+           // A more robust system would save the *key* of the current scenario.
+           // For now, we'll try to find the next step based on the *previous* chosen option.
+           // This is a placeholder and would need refinement for complex save/load.
+           // For now, if there's history, we simply restart.
+           setScenario(allGameScenarios.start);
+           setChoices(allGameScenarios.start.options);
+           setStoryHistory([]); // Clear history for a fresh start with external scenarios
            setGameStarted(true);
            setShowRestartButton(false);
         } else {
-           // If the last state was a disbarment or an invalid next state, restart
-           setScenario(gameScenarios.start);
-           setChoices(gameScenarios.start.options);
-           setGameStarted(true);
-           setShowRestartButton(false);
+          setScenario(allGameScenarios.start);
+          setChoices(allGameScenarios.start.options);
+          setGameStarted(true);
+          setShowRestartButton(false);
         }
       } else {
-        // No history, start fresh
-        setScenario(gameScenarios.start);
-        setChoices(gameScenarios.start.options);
+        setScenario(allGameScenarios.start);
+        setChoices(allGameScenarios.start.options);
         setGameStarted(true);
         setShowRestartButton(false);
       }
     } finally {
-      setIsLoading(false); // End loading
+      setIsLoading(false);
     }
-  }, [gameScenarios, loadGameHistory]);
+  }, [allGameScenarios, loadGameHistory]);
+
 
   // Function to handle player choice
   const handleChoice = useCallback(async (choice) => {
+    if (!allGameScenarios) return; // Ensure scenarios are loaded
+
     // Add current scenario and chosen option to history
     setStoryHistory(prev => [...prev, { scenarioText: scenario.text, chosenOption: choice.text }]);
     await saveGameHistory(scenario, choice.text); // Save to Firestore
 
-    const nextScenario = gameScenarios[choice.next];
+    const nextScenario = allGameScenarios[choice.next];
     if (nextScenario) {
       setScenario(nextScenario);
       setChoices(nextScenario.options || []); // Ensure choices is an array
@@ -237,57 +183,74 @@ const App = () => {
         setShowRestartButton(true);
       }
     }
-  }, [scenario, gameScenarios, saveGameHistory]);
+  }, [scenario, allGameScenarios, saveGameHistory]);
 
   // Function to restart the game
   const restartGame = () => {
-    setScenario(gameScenarios.start);
-    setChoices(gameScenarios.start.options);
+    if (!allGameScenarios) return; // Ensure scenarios are loaded
+    setScenario(allGameScenarios.start);
+    setChoices(allGameScenarios.start.options);
     setStoryHistory([]);
     setGameStarted(true);
     setShowRestartButton(false);
     setShowWelcomeMessage(false);
   };
 
-  // Effect to manage welcome message and start button
+  // Effect to manage welcome message and start button based on scenarios loaded
   useEffect(() => {
-    if (!gameStarted && !showWelcomeMessage) {
-      setScenario(gameScenarios.start);
-      setChoices(gameScenarios.start.options);
+    if (!gameStarted && !showWelcomeMessage && allGameScenarios) {
+      setScenario(allGameScenarios.start);
+      setChoices(allGameScenarios.start.options);
+      setIsLoading(false); // Done loading initial scenario
     }
-  }, [gameStarted, showWelcomeMessage, gameScenarios]);
+  }, [gameStarted, showWelcomeMessage, allGameScenarios]);
 
   // Display user ID for debugging and collaborative features
   const [userId, setUserId] = useState('');
   useEffect(() => {
     const initAuth = async () => {
-      const firebaseConfig = JSON.parse(canvasFirebaseConfig);
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setUserId(user.uid);
-        } else {
-          // If no user is authenticated, use a random ID. This part should ideally be handled
-          // by signInAnonymously or signInWithCustomToken to get a stable ID.
-          setUserId(crypto.randomUUID());
-        }
-      });
+      // Don't initialize Firebase if config is clearly invalid
+      if (canvasFirebaseConfig === '{}') {
+          console.warn("Firebase config is empty. Firestore will not function locally.");
+          setUserId(crypto.randomUUID()); // Assign a local dummy ID
+          return;
+      }
+      try {
+          const firebaseConfig = JSON.parse(canvasFirebaseConfig);
+          const app = initializeApp(firebaseConfig);
+          const auth = getAuth(app);
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              setUserId(user.uid);
+            } else {
+              setUserId(crypto.randomUUID()); // Fallback if auth state isn't immediately available
+            }
+          });
 
-      // Ensure initial sign-in for Canvas environment
-      if (canvasInitialAuthToken) {
-        try {
-          await signInWithCustomToken(auth, canvasInitialAuthToken);
-        } catch (error) {
-          console.error("Error signing in with custom token:", error);
-          await signInAnonymously(auth); // Fallback to anonymous
-        }
-      } else {
-        await signInAnonymously(auth); // Sign in anonymously if no token
+          if (canvasInitialAuthToken) {
+            await signInWithCustomToken(auth, canvasInitialAuthToken);
+          } else {
+            await signInAnonymously(auth);
+          }
+      } catch (error) {
+          console.error("Error initializing Firebase or signing in:", error);
+          setUserId(crypto.randomUUID()); // Ensure a userId is set even on error
       }
     };
     initAuth();
-  }, [canvasFirebaseConfig, canvasInitialAuthToken]); // Added dependencies to useEffect
+  }, [canvasFirebaseConfig, canvasInitialAuthToken]);
+
+  // Prevent game from starting until scenarios are loaded
+  if (isLoading && !allGameScenarios) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl text-center">
+          <p className="text-xl text-gray-700 animate-pulse">Loading Game Scenarios...</p>
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
