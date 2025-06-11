@@ -132,30 +132,15 @@ const App = () => {
     try {
       const history = await loadGameHistory();
       if (history.length > 0) {
-        const lastEntry = history[history.length - 1];
-        // Attempt to find the next scenario based on the last known state, or restart if at disbarment
-        let nextStep = 'start';
-        // This part is a simplified assumption; a real save/load might store current scenario key
-        // For now, if the last entry was a choice, we assume the next state is that choice's 'next' property.
-        // If the game ended in disbarment, or if it's the very first time loading, start fresh.
-        if (lastEntry.chosenOption && allGameScenarios[lastEntry.chosenOption] && !allGameScenarios[lastEntry.chosenOption].disbarment) {
-           // This logic is flawed for true state restoration; for a simple "continue" from last choice, it works if the key directly maps to a scenario.
-           // A more robust system would save the *key* of the current scenario.
-           // For now, we'll try to find the next step based on the *previous* chosen option.
-           // This is a placeholder and would need refinement for complex save/load.
-           // For now, if there's history, we simply restart.
-           setScenario(allGameScenarios.start);
-           setChoices(allGameScenarios.start.options);
-           setStoryHistory([]); // Clear history for a fresh start with external scenarios
-           setGameStarted(true);
-           setShowRestartButton(false);
-        } else {
-          setScenario(allGameScenarios.start);
-          setChoices(allGameScenarios.start.options);
-          setGameStarted(true);
-          setShowRestartButton(false);
-        }
+        // For now, if there's history, we simply restart to the main 'start' for fresh playthroughs
+        // A more robust system for saving and resuming game state would be complex.
+        setScenario(allGameScenarios.start);
+        setChoices(allGameScenarios.start.options);
+        setStoryHistory([]); // Clear history for a fresh start with external scenarios
+        setGameStarted(true);
+        setShowRestartButton(false);
       } else {
+        // No history, start fresh
         setScenario(allGameScenarios.start);
         setChoices(allGameScenarios.start.options);
         setGameStarted(true);
@@ -241,7 +226,7 @@ const App = () => {
   }, [canvasFirebaseConfig, canvasInitialAuthToken]);
 
   // Prevent game from starting until scenarios are loaded
-  if (isLoading && !allGameScenarios) {
+  if (isLoading || !allGameScenarios) { // Also check if allGameScenarios is null
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl text-center">
@@ -323,8 +308,14 @@ const App = () => {
 
             {scenario.disbarment && (
               <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6" role="alert">
-                <p className="font-bold">Disbarment Event!</p>
-                <p>{scenario.disbarment}</p>
+                <p className="font-bold">{scenario.disbarment.message}</p>
+                {scenario.disbarment.moral && (
+                  <>
+                    <hr className="my-3 border-red-300" />
+                    <p className="font-semibold mt-2">Moral of the Story:</p>
+                    <p>{scenario.disbarment.moral}</p>
+                  </>
+                )}
               </div>
             )}
 
