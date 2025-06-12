@@ -280,13 +280,13 @@ const App = () => {
       </style>
 
       <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">Defense Attorney: The Disbarment Adventure</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">Attorney Disbarment Adventure</h1> {/* Updated Title */}
         <p className="text-sm text-gray-500 mb-4 text-center">Your User ID: {userId}</p>
 
         {showWelcomeMessage ? (
           <div className="text-center">
             <p className="text-lg text-gray-700 mb-6">
-              Welcome to the Defense Attorney: The Disbarment Adventure! In this game, you are a defense attorney trying your best to navigate the legal world. However, no matter what, your journey will end in a wild and outrageous disbarment.
+              Welcome to the Attorney Disbarment Adventure! In this game, you are an attorney trying your best to navigate the legal world. However, no matter what, your journey will end in a wild and outrageous disbarment.
             </p>
             <button
               onClick={startGame}

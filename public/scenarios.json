@@ -1,11 +1,68 @@
 {
   "start": {
+    "text": "Welcome to the Attorney Disbarment Adventure. In this game, you are an attorney trying your best to navigate the legal world. However, no matter what, your journey will end in a wild and outrageous disbarment. Which role will you play today?",
+    "options": [
+      { "text": "Play as a Defense Attorney", "next": "introDefenseAttorney" },
+      { "text": "Play as a Prosecutor", "next": "introProsecutor" }
+    ]
+  },
+  "introDefenseAttorney": {
     "text": "The week begins. As a defense attorney, you have a few pressing matters on your plate. Which do you prioritize?",
     "options": [
       { "text": "Focus on a complex new client case, potentially a major career boost.", "next": "introFinancialCase" },
       { "text": "Address a tricky situation involving a current, high-stakes client.", "next": "introOngoingCase" }
     ]
   },
+  "introProsecutor": {
+    "text": "As a prosecutor, your duty is to seek justice. You're assigned a high-profile case involving organized crime, with immense public and political pressure to secure a conviction. Your team has gathered substantial evidence, but a crucial piece of exculpatory evidence has just landed on your desk. What do you do?",
+    "options": [
+      { "text": "Disclose the exculpatory evidence immediately to the defense, as required.", "next": "prosecutorDiscloseExculpatory" },
+      { "text": "Hold onto the evidence for now, hoping it doesn't surface before trial.", "next": "prosecutorHideExculpatory" },
+      { "text": "Re-evaluate the entire case and consider dropping charges if the evidence is truly damning.", "next": "prosecutorReevaluateCase" }
+    ]
+  },
+
+  "prosecutorDiscloseExculpatory": {
+    "text": "You immediately disclose the exculpatory evidence. The defense uses it to discredit a key witness and weaken your case. Public opinion turns against you, accusing you of mishandling the case. Your superiors, facing pressure, initiate an internal review of your judgment, citing 'a lack of winning mentality.' During the review, they find a pattern of previous cases where your ethical disclosures led to acquittal, damaging the office's conviction rates. What do you do?",
+    "options": [
+      { "text": "Defend your ethical duty, stating that justice, not conviction rates, is paramount.", "next": "prosecutorDefendEthics" },
+      { "text": "Admit to being 'too by-the-book' and promise to be more 'strategic' in future disclosures.", "next": "prosecutorStrategicDisclosure" }
+    ]
+  },
+  "prosecutorDefendEthics": {
+    "text": "Your defense of ethical duty is praised by some, but your superiors see it as a lack of loyalty to the office's goals. They dig deeper into your past, unearthing minor, unreported infractions (like using a state vehicle for personal errands or accepting a small gift from a police officer), which were previously overlooked but are now highlighted as 'a pattern of unprofessional conduct.'",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For a 'pattern of unprofessional conduct' and 'undermining the integrity of the prosecutor's office.' While your ethical disclosure was technically correct, your history of minor infractions is used to justify disbarment amidst political pressure and a perceived lack of loyalty. Your attempts to uphold ethics are overshadowed by past indiscretions.",
+      "moral": "Moral of the story: Even minor ethical lapses can be used against you when public pressure or political agendas are at play. A prosecutor's integrity must be unimpeachable not just in major cases, but in all aspects of conduct, as any perceived weakness can be exploited."
+    }
+  },
+  "prosecutorStrategicDisclosure": {
+    "text": "You promise to be more 'strategic.' Emboldened, your superiors push you to 'manage' witness testimony more aggressively. During a difficult cross-examination, you subtly guide a witness to omit certain details that, while technically true, would weaken the prosecution's narrative. The defense attorney immediately picks up on the omission and exposes it, leading to a mistrial. The judge, furious, refers your conduct to the bar for 'attempting to mislead the court.'",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'attempting to mislead the court' and 'subverting the truth-finding process.' Your decision to be 'strategic' with witness testimony backfires spectacularly, proving you actively sought to distort the truth. This direct assault on judicial integrity leads to your immediate disbarment.",
+      "moral": "Moral of the story: 'Strategic' management of evidence or witness testimony that leads to omissions or distortions of truth is a direct ethical violation. Prosecutors have a heightened duty of candor to the court, and any attempt to mislead will result in severe consequences, including disbarment."
+    }
+  },
+  "prosecutorHideExculpatory": {
+    "text": "You decide to hold onto the exculpatory evidence. The trial proceeds, and you secure a conviction. However, an anonymous tip leads to a post-conviction review. The withheld evidence is discovered, proving the defendant's innocence. The case becomes a national scandal, and the wrongfully convicted individual sues the state and you personally. Your office immediately launches an internal investigation.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'willful suppression of exculpatory evidence' (Brady violation) and 'conduct prejudicial to the administration of justice.' Your deliberate act of withholding crucial evidence results in a wrongful conviction, a national scandal, civil lawsuits, and immediate disbarment. You become a textbook example of prosecutorial misconduct.",
+      "moral": "Moral of the story: The fundamental duty of a prosecutor is to seek justice, not merely convictions. Willfully suppressing exculpatory evidence (a Brady violation) is one of the most severe ethical breaches a prosecutor can commit, leading to wrongful convictions, professional ruin, and potentially criminal charges."
+    }
+  },
+  "prosecutorReevaluateCase": {
+    "text": "You re-evaluate the case. The exculpatory evidence is indeed damning. You decide to drop the charges, explaining your ethical obligation to the public and your superiors. While this is ethically sound, it infuriates your political superiors, who see it as a sign of weakness and a betrayal of their anti-crime agenda. They begin a systematic campaign to undermine your credibility and find reasons to remove you from office, planting a scandalous story about your personal life in the local tabloids.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'conduct bringing the prosecutor's office into disrepute' and 'failure to maintain public trust,' amidst a politically motivated campaign to remove you. Although your actions were ethically sound, the intense political backlash and manufactured scandal surrounding your personal life (which were previously overlooked) lead to your disbarment. Your ethical choices are weaponized against you.",
+      "moral": "Moral of the story: Even when making ethically sound decisions, political pressure and public scrutiny can be immense, especially in high-profile cases. A prosecutor's personal life and past can be scrutinized and weaponized to justify removal when political agendas clash with ethical duties. Maintaining an impeccable personal life becomes critical in such environments."
+    }
+  },
+
+
   "introFinancialCase": {
     "text": "You've just taken on a high-profile client accused of financial fraud. The evidence is complex, and the stakes are incredibly high. Your reputation, and perhaps more, hinges on this case. What's your first move to prepare?",
     "options": [
@@ -141,7 +198,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For 'willful defiance of court orders' and 'criminal contempt of court.' Your open disrespect for judicial authority and your continued arguments against a lawful order lead to your immediate arrest in court, a public spectacle that results in swift disbarment and a jail sentence.",
-      "moral": "Moral of the story: Direct defiance of a judge's lawful order, particularly when it leads to contempt of court, is a severe ethical violation. Respect for judicial authority is non-negotiable, and such actions can result in immediate professional ruin and criminal penalties."
+      "moral": "Moral of the story: Direct defiance of a judge's lawful order, especially when it leads to contempt of court, is a severe ethical violation. Respect for judicial authority is non-negotiable, and such actions can result in immediate professional ruin and criminal penalties. Know when to concede a point."
     }
   },
   "unforeseenIncident": {
