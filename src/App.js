@@ -1,14 +1,14 @@
 /* global __app_id, __firebase_config, __initial_auth_token */
 import React, { useState, useEffect, useCallback } from 'react';
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, collection, addDoc, query, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, query, getDocs, setLogLevel } from 'firebase/firestore';
 
 
 // Main App component
 const App = () => {
   // Game state variables
-  const [scenario, setScenario] = useState({});
+  const [scene, setScene] = useState({});
   const [choices, setChoices] = useState([]);
   const [storyHistory, setStoryHistory] = useState([]);
   const [gameStarted, setGameStarted] = useState(false);
@@ -17,10 +17,120 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true); // Set to true initially to load scenarios
   const [allGameScenarios, setAllGameScenarios] = useState(null); // To store loaded scenarios
 
+  // Case-specific state for dynamic text and calculations
+  const [currentCase, setCurrentCase] = useState(null);
+  const [flightRisk, setFlightRisk] = useState(0);
+  const [communityHarm, setCommunityHarm] = useState(0);
+  const [professionalism, setProfessionalism] = useState(0); // Used for verdict calculation for Defense
+  const [limineSuccess, setLimineSuccess] = useState(false); // Condition for 'violateLimine'
+  const [visitedScenes, setVisitedScenes] = useState(new Set()); // Track visited scenes for risk factors
+
+  // Firebase state
+  const [db, setDb] = useState(null);
+  const [auth, setAuth] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [isAuthReady, setIsAuthReady] = useState(false);
+
   // Fallback for Canvas-provided global variables when running locally
   const canvasAppId = typeof __app_id !== 'undefined' ? __app_id : 'local-dev-app-id';
   const canvasFirebaseConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
   const canvasInitialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : '';
+
+  // Defendant profiles (moved here for simplicity, or could be in scenarios.json)
+  const defendantProfiles = [
+    {
+      key: 'vandelay',
+      name: "Mr. Arthur 'Art' Vandelay",
+      charges: "Assault in the First Degree (Felony A)",
+      history: "a prior Assault 3rd Degree (Gross Misdemeanor) from 5 years ago, and a DUI from 10 years ago. He is currently unemployed.",
+      victim: "Ms. Elaine Benes, age 45, who sustained a broken nose and significant bruising. A protective order has been requested.",
+      incident: "at a restaurant, following a verbal altercation, he allegedly threw a ceramic plate, striking the victim. Witnesses differ on who instigated the physical aspect.",
+      riskFactors: { flight: 8, harm: 7 } // Increased for higher risk
+    },
+    {
+      key: 'newman',
+      name: "Mr. Newman 'The Mailman' Post",
+      charges: "Malicious Mischief in the First Degree (Felony B) & Resisting Arrest",
+      history: "multiple complaints for 'improper mail handling' and a restraining order from a local dog. He is employed by the US Postal Service.",
+      victim: "the community mailbox for the 'Pleasant Valley' subdivision, which was found filled with jelly.",
+      incident: "Mr. Post was found covered in jelly near the vandalized mailbox, muttering about 'a war on junk mail.' He allegedly tried to flee on his mail truck when police arrived.",
+      riskFactors: { flight: 5, harm: 2 }
+    },
+    {
+      key: 'peterman',
+      name: "Mr. J. Peterman",
+      charges: "Theft in the First Degree (Felony B)",
+      history: "no criminal history, but a well-documented history of 'adventures' in Burma and other exotic locales. He owns a successful catalog company.",
+      victim: "the 'Urban Sombrero,' a priceless artifact from the 'Sultan of Swat's' private collection.",
+      incident: "Mr. Peterman was arrested at a high-society auction after allegedly swapping the real Urban Sombrero with a cheap knock-off he claims is 'even more authentic.' He insists it was a 'misunderstanding of epic proportions.'",
+      riskFactors: { flight: 8, harm: 1 }
+    },
+    {
+      key: 'brenda',
+      name: "Ms. Brenda H.",
+      charges: "Theft in the Third Degree (Gross Misdemeanor)",
+      history: "no criminal history. She is a single mother of two.",
+      victim: "a local branch of a national grocery store chain.",
+      incident: "store security observed her placing baby formula and diapers into her bag and attempting to leave without paying. She expressed remorse and stated she had recently lost her job.",
+      riskFactors: { flight: 1, harm: 1 }
+    },
+    {
+      key: 'kenny',
+      name: "Mr. Kenny R.",
+      charges: "Driving While License Suspended in the Third Degree (Misdemeanor)",
+      history: "two prior convictions for the same offense and a history of unpaid traffic tickets.",
+      victim: "The State of Washington.",
+      incident: "he was pulled over for a broken taillight. A routine check revealed his license was suspended for failure to pay fines.",
+      riskFactors: { flight: 3, harm: 1 }
+    }
+  ];
+
+  // --- FIREBASE INITIALIZATION ---
+  useEffect(() => {
+    const initFirebase = async () => {
+      if (canvasFirebaseConfig === '{}') {
+        console.warn("Firebase config is empty. Firestore will not function.");
+        setUserId(crypto.randomUUID());
+        setIsAuthReady(true);
+        return;
+      }
+
+      try {
+        const app = getApps().length === 0 ? initializeApp(JSON.parse(canvasFirebaseConfig)) : getApp();
+        const authInstance = getAuth(app);
+        const dbInstance = getFirestore(app);
+
+        setAuth(authInstance);
+        setDb(dbInstance);
+        setLogLevel('debug'); // Set log level for Firebase debugging
+
+        onAuthStateChanged(authInstance, async (user) => {
+          if (user) {
+            setUserId(user.uid);
+            setIsAuthReady(true);
+          } else {
+            try {
+              if (canvasInitialAuthToken) {
+                await signInWithCustomToken(authInstance, canvasInitialAuthToken);
+              } else {
+                await signInAnonymously(authInstance);
+              }
+            } catch (authError) {
+              console.error("Firebase sign-in error:", authError);
+              setUserId(crypto.randomUUID());
+              setIsAuthReady(true);
+            }
+          }
+        });
+      } catch (error) {
+        console.error("Error initializing Firebase:", error);
+        setUserId(crypto.randomUUID());
+        setIsAuthReady(true);
+      }
+    };
+
+    initFirebase();
+  }, [canvasFirebaseConfig, canvasInitialAuthToken]);
 
   // Effect to load game scenarios from JSON
   useEffect(() => {
@@ -45,65 +155,41 @@ const App = () => {
     loadScenarios();
   }, []); // Run only once on component mount
 
+  // --- GAME LOGIC FUNCTIONS ---
 
-  // Function to save game history to Firestore
-  const saveGameHistory = useCallback(async (currentScenario, chosenOptionText) => {
-    try {
-      const firebaseConfig = JSON.parse(canvasFirebaseConfig);
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      const auth = getAuth(app);
-
-      let currentUserId;
-      if (canvasInitialAuthToken) {
-        await signInWithCustomToken(auth, canvasInitialAuthToken);
-        currentUserId = auth.currentUser?.uid;
-      } else {
-        await signInAnonymously(auth);
-        currentUserId = auth.currentUser?.uid || crypto.randomUUID();
-      }
-
-      const historyEntry = {
-        timestamp: new Date(),
-        scenarioText: currentScenario.text,
-        chosenOption: chosenOptionText,
-        userId: currentUserId,
-        appId: canvasAppId,
-      };
-
-      // Store in public data for collaborative aspect (can be seen by others)
-      const publicDataCollectionRef = collection(db, `artifacts/${canvasAppId}/public/data/gameHistory`);
-      await addDoc(publicDataCollectionRef, historyEntry);
-
-      // Also store in private data for user's own history
-      const privateDataCollectionRef = collection(db, `artifacts/${canvasAppId}/users/${currentUserId}/myGameHistory`);
-      await addDoc(privateDataCollectionRef, historyEntry);
-
-      console.log("Game history saved successfully!");
-    } catch (error) {
-      console.error("Error saving game history:", error);
+  const saveGameHistory = useCallback(async (currentScenarioText, chosenOptionText) => {
+    if (!isAuthReady || !db || !userId) {
+      console.log("Firestore not ready, skipping save.");
+      return;
     }
-  }, [canvasAppId, canvasFirebaseConfig, canvasInitialAuthToken]);
 
-  // Function to load game history from Firestore
-  const loadGameHistory = useCallback(async () => {
+    const historyEntry = {
+      timestamp: new Date(),
+      scenarioText: currentScenarioText,
+      chosenOption: chosenOptionText,
+      userId,
+      appId: canvasAppId,
+    };
+
     try {
-      const firebaseConfig = JSON.parse(canvasFirebaseConfig);
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      const auth = getAuth(app);
+      const publicHistoryRef = collection(db, `artifacts/${canvasAppId}/public/data/gameHistory`);
+      await addDoc(publicHistoryRef, historyEntry);
+      console.log("Game history saved to public collection.");
+    } catch (error) {
+      console.error("Error saving public game history:", error);
+    }
+  }, [db, userId, isAuthReady, canvasAppId]);
 
-      let currentUserId;
-      if (canvasInitialAuthToken) {
-        await signInWithCustomToken(auth, canvasInitialAuthToken);
-        currentUserId = auth.currentUser?.uid;
-      } else {
-        await signInAnonymously(auth);
-        currentUserId = auth.currentUser?.uid || crypto.randomUUID();
-      }
 
-      const privateDataCollectionRef = collection(db, `artifacts/${canvasAppId}/users/${currentUserId}/myGameHistory`);
-      const q = query(privateDataCollectionRef); // You can add orderBy here if needed, but per instructions, we avoid it for simplicity.
+  const loadGameHistory = useCallback(async () => {
+    if (!isAuthReady || !db || !userId) {
+      console.log("Firestore not ready, skipping load.");
+      return [];
+    }
+
+    try {
+      const privateDataCollectionRef = collection(db, `artifacts/${canvasAppId}/users/${userId}/myGameHistory`);
+      const q = query(privateDataCollectionRef);
       const querySnapshot = await getDocs(q);
 
       const loadedHistory = [];
@@ -111,9 +197,7 @@ const App = () => {
         loadedHistory.push(doc.data());
       });
 
-      // Sort by timestamp if desired, as orderBy is avoided in query
       loadedHistory.sort((a, b) => a.timestamp.toDate() - b.timestamp.toDate());
-
       setStoryHistory(loadedHistory);
       console.log("Game history loaded successfully:", loadedHistory);
       return loadedHistory;
@@ -121,166 +205,187 @@ const App = () => {
       console.error("Error loading game history:", error);
       return [];
     }
-  }, [canvasAppId, canvasFirebaseConfig, canvasInitialAuthToken]);
+  }, [db, userId, isAuthReady, canvasAppId]);
 
-  // Function to start the game
   const startGame = useCallback(async () => {
     if (!allGameScenarios) return; // Ensure scenarios are loaded
 
     setShowWelcomeMessage(false);
     setIsLoading(true);
     try {
-      const history = await loadGameHistory();
-      if (history.length > 0) {
-        // For now, if there's history, we simply restart to the main 'start' for fresh playthroughs
-        // A more robust system for saving and resuming game state would be complex.
-        setScenario(allGameScenarios.start);
-        setChoices(allGameScenarios.start.options);
-        setStoryHistory([]); // Clear history for a fresh start with external scenarios
-        setGameStarted(true);
-        setShowRestartButton(false);
-      } else {
-        // No history, start fresh
-        setScenario(allGameScenarios.start);
-        setChoices(allGameScenarios.start.options);
-        setGameStarted(true);
-        setShowRestartButton(false);
-      }
+      // For this HTML version, we simplify by always starting fresh if history exists
+      // A more robust system for saving and resuming game state would be complex.
+      setStoryHistory([]); // Clear history for a fresh start with external scenarios
+      setCurrentCase(null);
+      setFlightRisk(0);
+      setCommunityHarm(0);
+      setProfessionalism(0);
+      setLimineSuccess(false);
+      setVisitedScenes(new Set());
+      setShowRiskScores(false);
+
+      setScene(allGameScenarios.start);
+      setChoices(allGameScenarios.start.options);
+      setGameStarted(true);
+      setShowRestartButton(false);
+
     } finally {
       setIsLoading(false);
     }
-  }, [allGameScenarios, loadGameHistory]);
+  }, [allGameScenarios]); // Removed loadGameHistory as dependency for simplicity of HTML version
 
 
-  // Function to handle player choice
-  const handleChoice = useCallback(async (choice) => {
+  const handleChoice = useCallback((choice) => {
     if (!allGameScenarios) return; // Ensure scenarios are loaded
 
-    // Add current scenario and chosen option to history
-    setStoryHistory(prev => [...prev, { scenarioText: scenario.text, chosenOption: choice.text }]);
-    await saveGameHistory(scenario, choice.text); // Save to Firestore
+    const currentScenario = scene;
+    let chosenOptionText = choice.text;
 
-    const nextScenario = allGameScenarios[choice.next];
-    if (nextScenario) {
-      setScenario(nextScenario);
-      setChoices(nextScenario.options || []); // Ensure choices is an array
-      if (nextScenario.disbarment) {
-        setShowRestartButton(true);
+    setStoryHistory(prev => [...prev, { scenarioText: currentScenario.text, chosenOption: chosenOptionText }]);
+    saveGameHistory(currentScenario.text, chosenOptionText);
+
+    if (choice.proPoints) {
+      setProfessionalism(prev => prev + choice.proPoints);
+    }
+
+    let nextSceneKey = choice.next;
+
+    // --- Special game logic for dynamic paths ---
+    if (nextSceneKey === 'caseAssignmentDefense') {
+      const randomCase = defendantProfiles[Math.floor(Math.random() * defendantProfiles.length)];
+      setCurrentCase(randomCase);
+      setFlightRisk(randomCase.riskFactors.flight);
+      setCommunityHarm(randomCase.riskFactors.harm);
+      setShowRiskScores(true);
+    }
+    if (nextSceneKey === 'calculateRuling') {
+      let finalScore = flightRisk + communityHarm;
+      if (choice.argument === 'OR') finalScore += communityHarm > 7 ? 5 : -2;
+      else if (choice.argument === 'Conditions') finalScore -= 4;
+      else if (choice.argument === 'Bond') finalScore += 1;
+
+      if (finalScore <= 2) nextSceneKey = 'commissionerDecisionOR';
+      else if (finalScore <= 12) nextSceneKey = 'commissionerDecisionStrictConditions';
+      else nextSceneKey = 'commissionerDecisionHighBond';
+    }
+    if (nextSceneKey === 'verdictDefense') { // Defense Verdict Calculation
+      if (professionalism >= 5) { // Threshold for "winning" as defense
+        nextSceneKey = 'acquittal';
+      } else {
+        nextSceneKey = 'guiltyVerdict';
       }
     }
-  }, [scenario, allGameScenarios, saveGameHistory]);
+    if (nextSceneKey === 'prosecutorVerdict') { // Prosecutor Verdict Calculation
+        if (professionalism >= 5) { // Threshold for "winning" as prosecutor
+            nextSceneKey = 'prosecutorGuiltyVerdict';
+        } else {
+            nextSceneKey = 'prosecutorAcquittal'; // New scenario for prosecutor losing
+        }
+    }
+    if (nextSceneKey === 'limineSuccess') {
+      setLimineSuccess(true);
+    }
+    // --- End special game logic ---
 
-  // Function to restart the game
-  const restartGame = () => {
-    if (!allGameScenarios) return; // Ensure scenarios are loaded
-    setScenario(allGameScenarios.start);
+    const nextScene = allGameScenarios[nextSceneKey];
+
+    if (nextScene) {
+      // Update risk scores if the scene has them and hasn't been visited in current path
+      if (!visitedScenes.has(nextSceneKey) && nextScene.riskFactors) {
+        setFlightRisk(prev => prev + (nextScene.riskFactors.flight || 0));
+        setCommunityHarm(prev => prev + (nextScene.riskFactors.harm || 0));
+        setVisitedScenes(prev => new Set(prev).add(nextSceneKey));
+        setShowRiskScores(true); // Ensure risk scores are shown if new scene has them
+      } else if (!nextScene.riskFactors) {
+          // If a scene doesn't have risk factors, hide the score display for clarity
+          setShowRiskScores(false);
+      }
+
+
+      setScene(nextScene);
+      setChoices(nextScene.options || []);
+
+      if (nextScene.disbarment || nextScene.isEnding) {
+        setShowRestartButton(true);
+      } else {
+        setShowRestartButton(false);
+      }
+    }
+  }, [scene, allGameScenarios, saveGameHistory, flightRisk, communityHarm, professionalism, visitedScenes]);
+
+  const restartGame = useCallback(() => {
+    setScene(allGameScenarios.start);
     setChoices(allGameScenarios.start.options);
     setStoryHistory([]);
-    setGameStarted(true);
+    setGameStarted(false); // Go back to welcome screen
     setShowRestartButton(false);
-    setShowWelcomeMessage(false);
-  };
+    setShowWelcomeMessage(true);
+    setCurrentCase(null);
+    setFlightRisk(0);
+    setCommunityHarm(0);
+    setProfessionalism(0);
+    setLimineSuccess(false);
+    setVisitedScenes(new Set());
+    setShowRiskScores(false);
+  }, [allGameScenarios]);
 
-  // Effect to manage welcome message and start button based on scenarios loaded
-  useEffect(() => {
-    if (!gameStarted && !showWelcomeMessage && allGameScenarios) {
-      setScenario(allGameScenarios.start);
-      setChoices(allGameScenarios.start.options);
-      setIsLoading(false); // Done loading initial scenario
+  // Render text with dynamic replacements and markdown
+  const renderSceneText = useCallback(() => {
+    let text = scene.text || "Loading...";
+    if (currentCase) {
+      text = text.replace(/\[defendantName\]/g, currentCase.name || 'Unknown');
+      text = text.replace(/\[charges\]/g, currentCase.charges || 'Unknown');
+      text = text.replace(/\[history\]/g, currentCase.history || 'None');
+      text = text.replace(/\[victim\]/g, currentCase.victim || 'Unknown');
+      text = text.replace(/\[incident\]/g, currentCase.incident || 'Unknown');
     }
-  }, [gameStarted, showWelcomeMessage, allGameScenarios]);
+    // Simple markdown for bolding and paragraph breaks
+    const htmlText = `<p>${text.replace(/\*\*(.*?)\*\*/g, '<b class="text-amber-400">$1</b>').split('\n').join('</p><p>')}</p>`;
+    return { __html: htmlText };
+  }, [scene.text, currentCase]);
 
-  // Display user ID for debugging and collaborative features
-  const [userId, setUserId] = useState('');
+  // Effect to manage welcome message and initial game state
   useEffect(() => {
-    const initAuth = async () => {
-      // Don't initialize Firebase if config is clearly invalid
-      if (canvasFirebaseConfig === '{}') {
-          console.warn("Firebase config is empty. Firestore will not function locally.");
-          setUserId(crypto.randomUUID()); // Assign a local dummy ID
-          return;
-      }
-      try {
-          const firebaseConfig = JSON.parse(canvasFirebaseConfig);
-          const app = initializeApp(firebaseConfig);
-          const auth = getAuth(app);
-          onAuthStateChanged(auth, (user) => {
-            if (user) {
-              setUserId(user.uid);
-            } else {
-              setUserId(crypto.randomUUID()); // Fallback if auth state isn't immediately available
-            }
-          });
+    if (allGameScenarios && isAuthReady && showWelcomeMessage) {
+      // If everything is loaded, display welcome and ready to start
+      setIsLoading(false);
+    } else if (allGameScenarios && isAuthReady && !gameStarted && !isLoading) {
+      // If scenarios loaded and auth ready, and game not started, kick off
+      startGame();
+    }
+  }, [allGameScenarios, isAuthReady, showWelcomeMessage, gameStarted, isLoading, startGame]);
 
-          if (canvasInitialAuthToken) {
-            await signInWithCustomToken(auth, canvasInitialAuthToken);
-          } else {
-            await signInAnonymously(auth);
-          }
-      } catch (error) {
-          console.error("Error initializing Firebase or signing in:", error);
-          setUserId(crypto.randomUUID()); // Ensure a userId is set even on error
-      }
-    };
-    initAuth();
-  }, [canvasFirebaseConfig, canvasInitialAuthToken]);
 
-  // Prevent game from starting until scenarios are loaded
-  if (isLoading || !allGameScenarios) { // Also check if allGameScenarios is null
+  // Display initial loading screen if scenarios or auth not ready
+  if (isLoading || !allGameScenarios || !isAuthReady) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl text-center">
-          <p className="text-xl text-gray-700 animate-pulse">Loading Game Scenarios...</p>
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-4">
+        <div className="text-center">
+          <p className="text-xl animate-pulse">
+            {isLoading ? 'Loading Game Scenarios...' : isAuthReady ? 'Initializing Game...' : 'Authenticating...'}
+          </p>
         </div>
       </div>
     );
   }
 
-
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <script src="https://cdn.tailwindcss.com"></script>
-      {/* Firebase SDK imports for HTML context - not strictly needed in React but good for reference */}
-      {/* These script tags are for the Canvas environment and generally not needed or recommended for local Create React App setups
-          as Firebase is installed via npm. Leaving them for fidelity to original immersive. */}
-      <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
-      <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
-      <script type="module" src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
+    <div className="min-h-screen bg-gray-900 text-gray-200 font-sans flex items-center justify-center p-4">
+      {/* Tailwind CSS and Fonts already loaded via CDN in index.html in the HTML version, but kept here for React consistency if you move back */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap');
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-sans { font-family: 'Inter', sans-serif; }
+        .btn { transition: all 0.2s ease-in-out; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); }
+      `}</style>
+      
+      <div className="w-full max-w-2xl mx-auto bg-gray-800 rounded-xl shadow-2xl p-6 md:p-8">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl md:text-4xl font-bold font-serif text-amber-300">Attorney Disbarment Adventure</h1>
+          <p className="text-gray-400 mt-2">Your journey to professional ruin starts now.</p>
+        </div>
 
-      <style>
-        {`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body {
-          font-family: 'Inter', sans-serif;
-        }
-        /* Custom button styling for a more engaging feel */
-        .game-button {
-          background-image: linear-gradient(to right, #6EE7B7 0%, #34D399 51%, #10B981 100%);
-          margin: 10px;
-          padding: 15px 30px;
-          text-align: center;
-          text-transform: uppercase;
-          transition: 0.5s;
-          background-size: 200% auto;
-          color: white;
-          box-shadow: 0 0 20px #eee;
-          border-radius: 10px;
-          display: block;
-          cursor: pointer;
-        }
-        .game-button:hover {
-          background-position: right center; /* change the direction of the change */
-          color: #fff;
-          text-decoration: none;
-        }
-        .game-button:active {
-          transform: translateY(2px);
-        }
-        `}
-      </style>
-
-      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">Attorney Disbarment Adventure</h1> {/* Updated Title */}
         <p className="text-sm text-gray-500 mb-4 text-center">Your User ID: {userId}</p>
 
         {showWelcomeMessage ? (
@@ -290,58 +395,44 @@ const App = () => {
             </p>
             <button
               onClick={startGame}
-              className="game-button focus:outline-none"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Loading Game...' : 'Start Your Career'}
+              className="btn w-full mt-6 bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold py-3 px-4 rounded-lg">
+              Start Your Career
             </button>
           </div>
         ) : (
           <div>
-            <div className="bg-gray-50 p-6 rounded-lg mb-6 shadow-inner min-h-[120px] flex items-center justify-center">
-              {isLoading ? (
-                <p className="text-lg text-gray-600 animate-pulse">Loading scenario...</p>
-              ) : (
-                <p className="text-lg text-gray-800 text-center">{scenario.text}</p>
-              )}
-            </div>
-
-            {scenario.disbarment && (
-              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6" role="alert">
-                <p className="font-bold">{scenario.disbarment.message}</p>
-                {scenario.disbarment.moral && (
-                  <>
-                    <hr className="my-3 border-red-300" />
-                    <p className="font-semibold mt-2">Moral of the Story:</p>
-                    <p>{scenario.disbarment.moral}</p>
-                  </>
-                )}
+            {showRiskScores && (
+              <div className="bg-gray-900 border border-gray-700 p-3 rounded-lg mb-6 text-sm text-center text-gray-300">
+                <span className="font-semibold">Case Assessment:</span> Flight Risk: <b className="text-amber-400">{flightRisk}</b> | Community Harm: <b className="text-red-400">{communityHarm}</b>
               </div>
             )}
-
-            {!scenario.disbarment && (
-              <div className="space-y-4">
-                {choices.map((choice, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleChoice(choice)}
-                    className="game-button w-full focus:outline-none"
-                    disabled={isLoading}
-                  >
+            
+            <div className="text-lg leading-relaxed text-gray-300 mb-6" dangerouslySetInnerHTML={renderSceneText()} />
+            
+            {scene.disbarment || scene.isEnding ? (
+              <div className="mt-4">
+                <div className="bg-red-900/50 border-l-4 border-red-500 text-red-200 p-6 rounded-lg">
+                  <h2 className="text-2xl font-bold font-serif text-red-400 mb-3">{scene.disbarment ? scene.disbarment.message : scene.text}</h2>
+                  {scene.disbarment && scene.disbarment.moral && (
+                    <>
+                      <hr className="my-3 border-red-300" />
+                      <p className="italic text-red-300 pt-4">
+                        <b>Moral of the story:</b> {scene.disbarment.moral}
+                      </p>
+                    </>
+                  )}
+                </div>
+                <button onClick={restartGame} className="btn w-full mt-6 bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold py-3 px-4 rounded-lg">
+                  Play Again & Fail Differently
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col space-y-3">
+                {choices.filter(choice => !choice.condition || (choice.condition === 'limineSuccess' && limineSuccess)).map((choice, index) => (
+                  <button key={index} onClick={() => handleChoice(choice)} className="btn w-full bg-gray-700 hover:bg-gray-600 text-gray-200 font-medium py-3 px-4 rounded-lg text-left">
                     {choice.text}
                   </button>
                 ))}
-              </div>
-            )}
-
-            {showRestartButton && (
-              <div className="text-center mt-8">
-                <button
-                  onClick={restartGame}
-                  className="game-button focus:outline-none bg-blue-500 hover:bg-blue-600"
-                >
-                  Restart Game
-                </button>
               </div>
             )}
             

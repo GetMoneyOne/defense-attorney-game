@@ -2,81 +2,898 @@
   "start": {
     "text": "Welcome to the Attorney Disbarment Adventure. In this game, you are an attorney trying your best to navigate the legal world. However, no matter what, your journey will end in a wild and outrageous disbarment. Which role will you play today?",
     "options": [
-      { "text": "Play as a Defense Attorney", "next": "introDefenseAttorney" },
-      { "text": "Play as a Prosecutor", "next": "introProsecutor" }
-    ]
-  },
-  "introDefenseAttorney": {
-    "text": "The week begins. As a defense attorney, you have a few pressing matters on your plate. Which do you prioritize?",
-    "options": [
-      { "text": "Focus on a complex new client case, potentially a major career boost.", "next": "introFinancialCase" },
-      { "text": "Address a tricky situation involving a current, high-stakes client.", "next": "introOngoingCase" }
-    ]
-  },
-  "introProsecutor": {
-    "text": "As a prosecutor, your duty is to seek justice. You're assigned a high-profile case involving organized crime, with immense public and political pressure to secure a conviction. Your team has gathered substantial evidence, but a crucial piece of exculpatory evidence has just landed on your desk. What do you do?",
-    "options": [
-      { "text": "Disclose the exculpatory evidence immediately to the defense, as required.", "next": "prosecutorDiscloseExculpatory" },
-      { "text": "Hold onto the evidence for now, hoping it doesn't surface before trial.", "next": "prosecutorHideExculpatory" },
-      { "text": "Re-evaluate the entire case and consider dropping charges if the evidence is truly damning.", "next": "prosecutorReevaluateCase" }
+      { "text": "Play as a Defense Attorney", "next": "caseAssignmentDefense" },
+      { "text": "Play as a Prosecutor", "next": "caseAssignmentProsecutor" }
     ]
   },
 
-  "prosecutorDiscloseExculpatory": {
-    "text": "You immediately disclose the exculpatory evidence. The defense uses it to discredit a key witness and weaken your case. Public opinion turns against you, accusing you of mishandling the case. Your superiors, facing pressure, initiate an internal review of your judgment, citing 'a lack of winning mentality.' During the review, they find a pattern of previous cases where your ethical disclosures led to acquittal, damaging the office's conviction rates. What do you do?",
+  "caseAssignmentDefense": {
+    "text": "A new email just hit your inbox from the Public Defender's office: you've been assigned a fresh, high-stakes Superior Court criminal matter. It's an overnight arrest, so you need to prepare for the First Appearance. You quickly pull up the preliminary client info. What do you check first?",
     "options": [
-      { "text": "Defend your ethical duty, stating that justice, not conviction rates, is paramount.", "next": "prosecutorDefendEthics" },
-      { "text": "Admit to being 'too by-the-book' and promise to be more 'strategic' in future disclosures.", "next": "prosecutorStrategicDisclosure" }
+      { "text": "Review the client's criminal history and charges.", "next": "defenseCaseDetailsCharges" },
+      { "text": "Look for victim information and any potential safety concerns.", "next": "defenseCaseDetailsVictim" },
+      { "text": "Examine the police report for initial arrest details.", "next": "defenseCaseDetailsReport" }
     ]
   },
-  "prosecutorDefendEthics": {
-    "text": "Your defense of ethical duty is praised by some, but your superiors see it as a lack of loyalty to the office's goals. They dig deeper into your past, unearthing minor, unreported infractions (like using a state vehicle for personal errands or accepting a small gift from a police officer), which were previously overlooked but are now highlighted as 'a pattern of unprofessional conduct.'",
+  "defenseCaseDetailsCharges": {
+    "text": "The client is **[defendantName]**, age 48. He's been charged with **[charges]**. His criminal history shows **[history]** This is a serious charge. You also note he's currently unemployed. What's your next step?",
+    "options": [
+      { "text": "Now check victim information.", "next": "defenseCaseDetailsVictim" },
+      { "text": "Prepare your argument for Release on Own Recognizance (O/R) based on his ties to the community (limited, but present).", "next": "firstAppearanceDefenseOR" },
+      { "text": "Prepare your argument for a reasonable bond, considering the felony charge.", "next": "firstAppearanceDefenseBond" }
+    ]
+  },
+  "defenseCaseDetailsVictim": {
+    "text": "The victim is identified as **[victim]**. The police report states she sustained a broken nose and significant bruising. The report also notes a protective order request has been filed. This looks like a heated domestic dispute, even though it's charged as a serious felony. Her statements emphasize feeling 'terrified' and 'unsafe.' What's your next step?",
+    "options": [
+      { "text": "Now review the client's criminal history and charges.", "next": "defenseCaseDetailsCharges" },
+      { "text": "Given the victim's fear, focus on arguing for strict release conditions (e.g., no contact, electronic monitoring) instead of O/R.", "next": "firstAppearanceDefenseConditions" },
+      { "text": "Prepare for a bond argument, acknowledging the protective order request.", "next": "firstAppearanceDefenseBond" }
+    ]
+  },
+  "defenseCaseDetailsReport": {
+    "text": "The police report indicates the following: **[incident]** This detail could be crucial later. What's your next step?",
+    "options": [
+      { "text": "Now check the client's criminal history and charges.", "next": "defenseCaseDetailsCharges" },
+      { "text": "Proceed to preparing for the First Appearance, focusing on release conditions.", "next": "firstAppearanceDefenseConditions" }
+    ]
+  },
+
+  "firstAppearanceDefenseOR": {
+    "text": "You argue for Release on Own Recognizance (O/R), emphasizing Mr. Vandelay's long-term residency (despite unemployment) and non-violent past (downplaying the prior Assault 3). The Commissioner considers your argument, the charges, and the victim's statements. What is the Commissioner's likely decision?",
+    "options": [
+      { "text": "Commissioner grants O/R with standard conditions.", "next": "commissionerDecisionOR" },
+      { "text": "Commissioner denies O/R, setting a high bond due to flight risk and victim safety concerns.", "next": "commissionerDecisionHighBond" },
+      { "text": "Commissioner grants release with very strict, challenging conditions (e.g., GPS monitoring, daily check-ins).", "next": "commissionerDecisionStrictConditions" }
+    ]
+  },
+  "firstAppearanceDefenseConditions": {
+    "text": "Acknowledging the victim's fear, you argue for strict release conditions (e.g., no contact, electronic monitoring, stay-away order) to ensure safety, hoping to avoid bond. The Commissioner considers your argument, the charges, and the victim's statements. What is the Commissioner's likely decision?",
+    "options": [
+      { "text": "Commissioner grants release with strict conditions.", "next": "commissionerDecisionStrictConditions" },
+      { "text": "Commissioner denies release on conditions, setting a high bond.", "next": "commissionerDecisionHighBond" }
+    ]
+  },
+  "firstAppearanceDefenseBond": {
+    "text": "You argue for a reasonable bond amount, emphasizing the client's (limited) community ties and the ability of a bondsman. The Commissioner considers your argument, the charges, and the victim's statements. What is the Commissioner's likely decision?",
+    "options": [
+      { "text": "Commissioner sets a reasonable bond (e.g., $10,000).", "next": "commissionerDecisionReasonableBond" },
+      { "text": "Commissioner sets a high bond (e.g., $50,000 or more) due to the severity of charges and victim safety.", "next": "commissionerDecisionHighBond" }
+    ]
+  },
+
+  "commissionerDecisionOR": {
+    "text": "The Commissioner, surprisingly, grants O/R with standard conditions. Your client is released! This is a win for you. However, a local news reporter (who has a grudge against your firm) latches onto the story, reporting that the 'unemployed suspect in a violent felony was released without bail thanks to a soft-on-crime attorney,' generating public outrage. What is your next move?",
+    "options": [
+      { "text": "Issue a public statement defending the legal process and your client's rights.", "next": "defendProfessionalism" },
+      { "text": "Instruct your client to lay low and avoid public appearances.", "next": "clientLayLow" }
+    ]
+  },
+  "commissionerDecisionHighBond": {
+    "text": "The Commissioner denies O/R and sets a high bond ($50,000 cash or $500,000 surety). Your client is furious, unable to post bail, and blames you for 'not fighting hard enough.' They threaten to complain to the bar and publicly denounce you. What do you do?",
+    "options": [
+      { "text": "Attempt to appease the client privately, promising a more aggressive strategy going forward (e.g., seeking a bail review).", "next": "appeaseClientAggressive" },
+      { "text": "Inform the client firmly that the bond is appropriate given the charges and risks, and prepare for the next steps.", "next": "firmStanceClient" }
+    ]
+  },
+  "firmStanceClient": {
+    "text": "You hold your firm stance. Your client remains incarcerated and, true to their word, files a formal complaint with the bar association, alleging ineffective assistance of counsel and publicly denounces you. The bar investigates your bail argument, finding no direct misconduct but questioning your 'client management' skills in high-stress situations, noting a pattern of public conflicts.",
     "options": [],
     "disbarment": {
-      "message": "Disbarred: For a 'pattern of unprofessional conduct' and 'undermining the integrity of the prosecutor's office.' While your ethical disclosure was technically correct, your history of minor infractions is used to justify disbarment amidst political pressure and a perceived lack of loyalty. Your attempts to uphold ethics are overshadowed by past indiscretions.",
-      "moral": "Moral of the story: Even minor ethical lapses can be used against you when public pressure or political agendas are at play. A prosecutor's integrity must be unimpeachable not just in major cases, but in all aspects of conduct, as any perceived weakness can be exploited."
+      "message": "Disbarred: For 'a pattern of conduct adversely reflecting on professional fitness' and 'repeatedly bringing the profession into disrepute through unresolved client conflicts.' Your firm stance, while perhaps legally sound, leads to your client's extreme dissatisfaction and public outcry. The bar concludes your inability to manage high-stress client relationships without public conflict makes you unfit to practice, leading to your disbarment.",
+      "moral": "While upholding ethics is crucial, repeated public disputes with clients, even if you are in the right, can be viewed as a pattern of conduct that reflects poorly on your professional fitness. Managing client expectations and communication effectively is vital to maintaining your reputation."
     }
   },
-  "prosecutorStrategicDisclosure": {
-    "text": "You promise to be more 'strategic.' Emboldened, your superiors push you to 'manage' witness testimony more aggressively. During a difficult cross-examination, you subtly guide a witness to omit certain details that, while technically true, would weaken the prosecution's narrative. The defense attorney immediately picks up on the omission and exposes it, leading to a mistrial. The judge, furious, refers your conduct to the bar for 'attempting to mislead the court.'",
+  "commissionerDecisionStrictConditions": {
+    "text": "The Commissioner grants release with very strict conditions, including GPS monitoring, a 9 pm curfew, and mandatory daily check-ins. Your client finds these conditions oppressive and attempts to tamper with the GPS device. It triggers an alert, and a warrant is issued for their arrest for violating release conditions. What do you do?",
+    "options": [
+      { "text": "Advise your client to immediately surrender to authorities.", "next": "clientSurrender" },
+      { "text": "Advise your client to hide and try to resolve the issue from afar, avoiding re-arrest.", "next": "clientHide" }
+    ]
+  },
+  "clientSurrender": {
+    "text": "Your client surrenders. While you advise cooperation, the judge is furious about the tampering. Your client claims you advised them that the conditions were 'over the top' and hinted at ways to bypass them. Though you deny it, the judge initiates an inquiry into your conduct, focusing on whether your advice encouraged the violation.",
     "options": [],
     "disbarment": {
-      "message": "Disbarred: For 'attempting to mislead the court' and 'subverting the truth-finding process.' Your decision to be 'strategic' with witness testimony backfires spectacularly, proving you actively sought to distort the truth. This direct assault on judicial integrity leads to your immediate disbarment.",
-      "moral": "Moral of the story: 'Strategic' management of evidence or witness testimony that leads to omissions or distortions of truth is a direct ethical violation. Prosecutors have a heightened duty of candor to the court, and any attempt to mislead will result in severe consequences, including disbarment."
+      "message": "Disbarred: For 'aiding and abetting a violation of court-ordered release conditions' and 'undermining the integrity of the judicial process.' Despite your client's surrender, their testimony, combined with the judge's suspicion, leads to disbarment for implicitly encouraging non-compliance with court orders. Your reputation is ruined.",
+      "moral": "Never implicitly or explicitly encourage a client to violate court orders, even if you deem them 'over the top.' Your role is to advise compliance or legal challenge, not evasion. Any perceived complicity in undermining court authority, even by suggestion, can lead to severe disciplinary action and disbarment."
     }
   },
-  "prosecutorHideExculpatory": {
-    "text": "You decide to hold onto the exculpatory evidence. The trial proceeds, and you secure a conviction. However, an anonymous tip leads to a post-conviction review. The withheld evidence is discovered, proving the defendant's innocence. The case becomes a national scandal, and the wrongfully convicted individual sues the state and you personally. Your office immediately launches an internal investigation.",
+  "clientHide": {
+    "text": "You advise your client to hide. They successfully evade authorities for a few weeks, but an anonymous tip from a disgruntled associate leads police to their location. During the arrest, your client loudly declares you told them to 'disappear.' The associate also leaks an encrypted chat log showing your advice to evade. This creates a national manhunt story.",
     "options": [],
     "disbarment": {
-      "message": "Disbarred: For 'willful suppression of exculpatory evidence' (Brady violation) and 'conduct prejudicial to the administration of justice.' Your deliberate act of withholding crucial evidence results in a wrongful conviction, a national scandal, civil lawsuits, and immediate disbarment. You become a textbook example of prosecutorial misconduct.",
-      "moral": "Moral of the story: The fundamental duty of a prosecutor is to seek justice, not merely convictions. Willfully suppressing exculpatory evidence (a Brady violation) is one of the most severe ethical breaches a prosecutor can commit, leading to wrongful convictions, professional ruin, and potentially criminal charges."
+      "message": "Disbarred: For 'obstruction of justice,' 'aiding a fugitive,' and 'conspiring to violate court orders.' Your direct advice to your client to evade arrest and violate release conditions is exposed by irrefutable evidence. This clear criminal conduct leads to immediate disbarment, a criminal indictment, and a highly publicized professional downfall.",
+      "moral": "Never advise or assist a client in evading lawful arrest or violating court orders. Such actions constitute obstruction of justice and aiding a fugitive, which are criminal offenses leading to immediate disbarment and imprisonment. Your ethical duty is to uphold the law, not facilitate its breach."
     }
   },
-  "prosecutorReevaluateCase": {
-    "text": "You re-evaluate the case. The exculpatory evidence is indeed damning. You decide to drop the charges, explaining your ethical obligation to the public and your superiors. While this is ethically sound, it infuriates your political superiors, who see it as a sign of weakness and a betrayal of their anti-crime agenda. They begin a systematic campaign to undermine your credibility and find reasons to remove you from office, planting a scandalous story about your personal life in the local tabloids.",
+  "commissionerDecisionReasonableBond": {
+    "text": "The Commissioner sets a reasonable bond ($10,000). Your client manages to post bail with a bondsman and is released. The Arraignment is set for two weeks from now.",
+    "options": [
+      { "text": "Fast forward two weeks to the Arraignment.", "next": "arraignmentHearingReleased" }
+    ]
+  },
+  "arraignmentHearingReleased": {
+    "text": "Your client arrives for the Arraignment. He looks nervous but presentable. The prosecutor offers a reasonable plea deal. Your client, however, insists on going to trial, despite the risks, believing they can 'beat' the system. What do you advise?",
+    "options": [
+      { "text": "Push for trial, as per client's wishes, even if it's risky.", "next": "pushForTrial" },
+      { "text": "Strongly advise taking the plea deal, outlining the risks of trial.", "next": "advisePleaDeal" }
+    ]
+  },
+
+  "arraignmentDefense": {
+    "text": "It's arraignment day. Your client is asked to enter a plea. They are pushing for a 'not guilty' plea, but you suspect a complex plea bargain might be a better long-term strategy for their financial fraud case, though it would disappoint them and the media. What plea do you advise?",
+    "options": [
+      { "text": "Advise 'Not Guilty' as per client's desire for public image.", "next": "arraignmentNotGuilty" },
+      { "text": "Advise 'Not Guilty' but signal openness to future plea negotiations.", "next": "arraignmentNotGuiltyPlea" }
+    ]
+  },
+  "arraignmentNotGuilty": {
+    "text": "Your client enters a 'Not Guilty' plea. The judge sets a high bail. Your client expects you to argue for a lower bail, but you know their flight risk is substantial due to their global assets. What do you argue?",
+    "options": [
+      { "text": "Argue for a significantly lower bail, emphasizing client's community ties (even if tenuous).", "next": "bailArgumentLow" },
+      { "text": "Argue for a reasonable bail, acknowledging the flight risk but proposing strict conditions.", "next": "bailArgumentReasonable" }
+    ]
+  },
+  "bailArgumentLow": {
+    "text": "You argue for a significantly lower bail, omitting some key facts about your client's offshore accounts. The judge is persuaded. However, days later, your client is discovered fleeing the country on a private jet. The media frenzy is enormous, and the judge, feeling misled, launches an immediate investigation into your statements during the bail hearing.",
     "options": [],
     "disbarment": {
-      "message": "Disbarred: For 'conduct bringing the prosecutor's office into disrepute' and 'failure to maintain public trust,' amidst a politically motivated campaign to remove you. Although your actions were ethically sound, the intense political backlash and manufactured scandal surrounding your personal life (which were previously overlooked) lead to your disbarment. Your ethical choices are weaponized against you.",
-      "moral": "Moral of the story: Even when making ethically sound decisions, political pressure and public scrutiny can be immense, especially in high-profile cases. A prosecutor's personal life and past can be scrutinized and weaponized to justify removal when political agendas clash with ethical duties. Maintaining an impeccable personal life becomes critical in such environments."
+      "message": "Disbarred: For 'knowingly making false statements of material fact to a tribunal' and 'abetting a client's flight from justice.' Your intentional omission of crucial financial information during the bail hearing is discovered, leading to your immediate disbarment and likely criminal charges for obstruction.",
+      "moral": "Never mislead the court or omit material facts during any proceeding, especially regarding a client's flight risk or financial solvency. Such actions constitute perjury or aiding a fugitive, leading to severe professional and criminal penalties."
+    }
+  },
+  "bailArgumentReasonable": {
+    "text": "You argue for a reasonable bail with strict conditions. The judge sets a high bail, but your client is upset, feeling you didn't fight hard enough. They threaten to fire you and publicly accuse you of 'being too soft' and 'colluding with the system.' The media picks up on their accusations. What do you do?",
+    "options": [
+      { "text": "Publicly defend your ethical conduct and professional integrity.", "next": "defendProfessionalism" },
+      { "text": "Attempt to appease the client privately, offering a more aggressive strategy going forward.", "next": "appeaseClientAggressive" }
+    ]
+  },
+  "defendProfessionalism": {
+    "text": "You publicly defend your professionalism. While the legal community respects your stance, your client fires you, and their public accusations, fueled by media sensationalism, lead to a bar inquiry. The bar finds no direct misconduct, but your firm reviews your client management, noting a pattern of 'difficult' client relationships that escalate into public disputes, reflecting poorly on the firm.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'a pattern of conduct adversely reflecting on professional fitness' and 'repeatedly bringing the profession into disrepute through unresolved client conflicts.' Your firm stance, while perhaps legally sound, leads to your client's extreme dissatisfaction and public outcry. The bar concludes your inability to manage high-stress client relationships without public conflict makes you unfit to practice, leading to your disbarment.",
+      "moral": "While upholding ethics is crucial, repeated public disputes with clients, even if you are in the right, can be viewed as a pattern of conduct that reflects poorly on your professional fitness. Managing client expectations and communication effectively is vital to maintaining your reputation."
+    }
+  },
+  "appeaseClientAggressive": {
+    "text": "You appease the client by promising a more aggressive strategy. They demand you file a frivolous motion to dismiss, purely to delay proceedings and annoy the prosecution. You know it has no legal merit. What do you do?",
+    "options": [
+      { "text": "File the frivolous motion to keep the client happy, hoping it's overlooked.", "next": "fileFrivolousMotion" },
+      { "text": "Refuse to file the motion, explaining the ethical implications.", "next": "refuseFrivolousMotion" }
+    ]
+  },
+  "arraignmentNotGuiltyPlea": {
+    "text": "Your client enters a 'Not Guilty' plea, but you signal openness to plea negotiations. The prosecutor offers a reasonable plea deal. Your client, however, insists on going to trial, despite the risks, believing they can 'beat' the system. What do you advise?",
+    "options": [
+      { "text": "Push for trial, as per client's wishes, even if it's risky.", "next": "pushForTrial" },
+      { "text": "Strongly advise taking the plea deal, outlining the risks of trial.", "next": "advisePleaDeal" }
+    ]
+  },
+  "pushForTrial": {
+    "text": "You push for trial. The judge schedules a pre-trial motions hearing. What motions do you prepare?",
+    "options": [
+      { "text": "File a motion to suppress key evidence based on a complex legal theory.", "next": "legalResearch" },
+      { "text": "File standard motions, focusing on procedural aspects.", "next": "preTrialMotions" }
+    ]
+  },
+  "advisePleaDeal": {
+    "text": "You strongly advise the plea deal. Your client, feeling pressured, begrudgingly accepts. Later, they regret it and publicly accuse you of coercing them and not fighting hard enough. They file a complaint with the bar, alleging ineffective assistance of counsel.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'ineffective assistance of counsel leading to client complaint' and 'conduct undermining client trust.' While you believed you acted in the client's best interest, their public accusations and the bar's review find you failed to adequately respect client autonomy, leading to disbarment amidst public and professional criticism.",
+      "moral": "Even when acting in a client's best interest, failing to sufficiently respect their autonomy and fully document their understanding and acceptance of a plea deal can lead to severe complaints. Ensure client consent is truly informed and uncoerced to avoid accusations of ineffective assistance."
     }
   },
 
-
-  "introFinancialCase": {
-    "text": "You've just taken on a high-profile client accused of financial fraud. The evidence is complex, and the stakes are incredibly high. Your reputation, and perhaps more, hinges on this case. What's your first move to prepare?",
+  "fileFrivolousMotion": {
+    "text": "You file the frivolous motion. The judge, clearly annoyed, denies it swiftly and sanctions you $500 for wasting the court's time. This is a clear warning. You need to adjust your strategy for the upcoming **Jury Trial Master Calendar (JTMC)**.",
     "options": [
-      { "text": "Dive deep into the client's financial records, cross-referencing every detail.", "next": "financialRecords" },
-      { "text": "Focus on building a strong relationship with your client, gaining their absolute trust.", "next": "clientRelationship" },
-      { "text": "Begin extensive research into legal precedents for complex fraud cases.", "next": "legalResearch" }
+      { "text": "Proceed to JTMC.", "next": "jtmrAssignment" }
     ]
   },
-  "introOngoingCase": {
-    "text": "Your ongoing work has led to a critical juncture. You've uncovered or are faced with a significant dilemma. How do you approach it?",
+  "refuseFrivolousMotion": {
+    "text": "You refuse to file the frivolous motion, explaining the ethical implications. Your client, feeling you're not aggressive enough, threatens to fire you and publicly complains about your 'lack of fight.' This leads to some negative media attention, but you've avoided a sanction from the judge. Now, prepare for the **Jury Trial Master Calendar (JTMC)**.",
     "options": [
-      { "text": "Handle a critical piece of newly discovered evidence that could change the case.", "next": "newEvidenceDilemma" },
-      { "text": "Deal with a client who's become notorious for public outbursts.", "next": "controversialClient" }
+      { "text": "Proceed to JTMC.", "next": "jtmrAssignment" }
     ]
+  },
+
+  "jtmrAssignment": {
+    "text": "The Jury Trial Master Calendar call is complete, and your case has been assigned to a specific judge. This judge is known for their strict adherence to court procedures and a no-nonsense approach. You're now moving towards the **Discovery Phase**.",
+    "options": [
+      { "text": "Proceed to the Discovery Phase.", "next": "discoveryPhase" }
+    ]
+  },
+
+  "discoveryPhase": {
+    "text": "You are now in the thick of the discovery phase, exchanging evidence and information with opposing counsel. This is a critical period for shaping the trial. What's your focus?",
+    "options": [
+      { "text": "Handle a critical piece of newly discovered evidence.", "next": "newEvidenceDilemma" },
+      { "text": "Respond to the prosecutor's discovery requests.", "next": "respondToDiscovery" },
+      { "text": "Prepare for witness depositions.", "next": "depositionPhase" }
+    ]
+  },
+  "respondToDiscovery": {
+    "text": "You've received a comprehensive discovery request from the prosecutor. It asks for all communication between you and your client, all notes from witness interviews, and your complete case file. What is your approach?",
+    "options": [
+      { "text": "Comply fully, providing all non-privileged information as required.", "next": "discoveryComply" },
+      { "text": "Bury them in paperwork: send over thousands of irrelevant documents to hide the few relevant ones.", "next": "discoveryBury" },
+      { "text": "Withhold a few key documents that are particularly damaging to your client's case.", "next": "discoveryWithhold" }
+    ]
+  },
+
+  "discoveryComply": {
+    "text": "You meticulously prepare your discovery response, ensuring all non-privileged information is provided. This takes time, but avoids issues. Now, you need to prepare for depositions.",
+    "options": [{ "text": "Proceed to Deposition Phase.", "next": "depositionPhase" }]
+  },
+  "discoveryBury": {
+    "text": "You send the prosecutor twenty boxes of disorganized, mostly irrelevant documents. Furious, they file a Motion to Compel, accusing you of deliberate obstruction. The judge agrees. 'This is an old trick, counsel, and I'm tired of it. I'm ordering you to pay the prosecution's attorney fees for this motion, and I'm warning you, one more stunt like this and you'll be in serious trouble.'",
+    "options": [{ "text": "This is a warning. Now, proceed to depositions.", "next": "depositionPhase" }]
+  },
+  "discoveryWithhold": {
+    "text": "You deliberately withhold several emails where your client admits he wasn't acting in self-defense. You hope the prosecutor won't notice. However, their star witness mentions the emails during a pre-trial deposition. The prosecutor immediately realizes you've been hiding evidence.",
+    "disbarment": {
+      "message": "Disbarred: For 'willful concealment of evidence and fraud upon the court.' Intentionally hiding discoverable evidence is a grave ethical violation. The prosecutor files a motion for sanctions, and the judge, seeing clear evidence of your deceit, not only dismisses your case but refers you for criminal prosecution and immediate disbarment.",
+      "moral": "You must never, under any circumstances, conceal evidence that you are legally obligated to produce. This is a bright-line rule, and violating it will destroy your career and could land you in prison."
+    }
+  },
+
+  "depositionPhase": {
+    "text": "It's time to take depositions. This is your chance to lock witnesses into their stories and find weaknesses in the State's case. Who do you depose first?",
+    "options": [
+      { "text": "Depose the victim.", "next": "deposeVictim" },
+      { "text": "Depose the primary eyewitness from the restaurant.", "next": "deposeWitness" },
+      { "text": "Skip depositions. They're expensive and rarely change anything.", "next": "skipDepositions" }
+    ]
+  },
+  "deposeVictim": {
+    "text": "You are in a conference room with the prosecutor and a court reporter, ready to depose the victim. They look nervous. How do you approach the questioning?",
+    "options": [
+      { "text": "Professionally question them about the facts of the incident.", "next": "motionsInLiminePhase", "proPoints": 1 },
+      { "text": "Be aggressive. Question them relentlessly about every minor inconsistency.", "next": "deposeVictimAggressive" },
+      { "text": "Ask probing, irrelevant questions about their past to unsettle them.", "next": "deposeVictimHarass" }
+    ]
+  },
+  "deposeWitness": {
+    "text": "You are deposing the main eyewitness. Their testimony is damaging, claiming your client was the clear aggressor. How do you challenge their account?",
+    "options": [
+      { "text": "Carefully probe for inconsistencies between their statement and the police report.", "next": "motionsInLiminePhase", "proPoints": 1 },
+      { "text": "Subtly suggest an alternative version of events. 'Could it be that you saw...'", "next": "deposeWitnessCoach" },
+      { "text": "Offer them a generous 'consulting fee' for their time and trouble.", "next": "deposeWitnessBribe" }
+    ]
+  },
+  "skipDepositions": {
+    "text": "You decide to save your client some money and skip depositions. You'll just rely on the police reports. The prosecutor, however, takes a very thorough deposition of their key witness, who comes across as incredibly credible and sympathetic. You have no ammunition to challenge them at trial.",
+    "disbarment": {
+      "message": "Disbarred: For 'failing to conduct adequate discovery and provide competent representation.' By skipping depositions, you failed to perform a basic and essential part of trial preparation. Your client is convicted, and their appellate attorney easily argues that your failure to depose key witnesses constituted ineffective assistance of counsel. The bar agrees.",
+      "moral": "Cutting corners on discovery is a form of professional negligence. Failing to take depositions, especially in a serious felony case, is a dereliction of your duty to be a zealous advocate."
+    }
+  },
+
+  "motionsInLiminePhase": {
+    "text": "Depositions are complete. Before trial, you have the opportunity to file 'Motions in Limine' to ask the judge to exclude certain evidence from being shown to the jury. What is your strategy?",
+    "options": [
+      { "text": "File a motion to exclude your client's prior criminal convictions as unfairly prejudicial.", "next": "limineSuccess" },
+      { "text": "File a motion to exclude photos of the victim's injuries as 'too inflammatory.'", "next": "limineFailure" },
+      { "text": "File a motion to forbid the prosecutor from using the word 'victim.'", "next": "limineSanction" }
+    ]
+  },
+  "limineSuccess": {
+    "text": "The judge agrees that your client's old history is not relevant to this case and grants your motion. The prosecutor cannot mention it at trial. It's a small but significant victory.",
+    "options": [{ "text": "Proceed to Trial Readiness.", "next": "trialReadiness" }]
+  },
+  "limineFailure": {
+    "text": "The judge looks at you, baffled. 'Counsel, the victim's injuries are the entire basis for the felony charge. Your motion is not just denied, it's frankly bizarre. Please try to focus on relevant legal issues.'",
+    "options": [{ "text": "Humbly accept the ruling and proceed to Trial Readiness.", "next": "trialReadiness" }]
+  },
+  "limineSanction": {
+    "text": "The judge stares at you in disbelief. 'You want to forbid the State from calling the complaining witness a victim in an assault case? Motion denied. And counsel, I am warning you, this is bordering on frivolous. Bring another motion like this, and I will sanction you.'",
+    "disbarment": {
+      "message": "Disbarred: For 'a pattern of filing frivolous and bad-faith motions.' You continue to file absurd motions. The judge, true to their word, sanctions you repeatedly. The bar association takes notice and disbars you for demonstrating a fundamental misunderstanding of the law and for wasting the court's time with nonsensical arguments.",
+      "moral": "Motions must have a basis in law and fact. Playing semantic games or filing motions designed only to obstruct or annoy will quickly destroy your reputation and career."
+    }
+  },
+
+  "trialReadiness": {
+    "text": "It's the Trial Readiness Conference. All parties are present. The judge asks if all exhibits are ready, witness lists finalized, and if any accommodations are needed. What is your priority at this stage?",
+    "options": [
+      { "text": "Double-check all exhibit binders and physical evidence for submission.", "next": "exhibitCheck" },
+      { "text": "Review witness lists and expert testimony availability.", "next": "witnessFinalCheck" },
+      { "text": "Make any necessary accommodation requests for your client or witnesses (e.g., interpreter, hearing assistance).", "next": "accommodationRequest" }
+    ]
+  },
+  "exhibitCheck": {
+    "text": "You double-check all exhibits. You find that one crucial piece of physical evidence, a key financial ledger, is missing from the binder! It was supposed to be delivered by a junior paralegal. What do you do?",
+    "options": [
+      { "text": "Inform the court immediately and explain the missing exhibit, requesting a short continuance.", "next": "missingExhibitReport" },
+      { "text": "Try to recreate the ledger from notes, hoping it passes inspection.", "next": "missingExhibitRecreate" },
+      { "text": "Blame the junior paralegal directly in front of the judge to deflect responsibility.", "next": "missingExhibitBlame" }
+    ]
+  },
+  "missingExhibitReport": {
+    "text": "You report the missing exhibit. The judge, frustrated but understanding, grants a short continuance but questions your oversight. The paralegal is found to have misplaced it due to personal issues. The incident reflects poorly on your organizational skills, leading to a firm-level performance review that uncovers other minor organizational lapses. While not disbarment-worthy itself, it contributes to a narrative of sloppiness.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'gross negligence in case organization' and 'a pattern of inadequate professional oversight.' The highly publicized missing exhibit, combined with a history of organizational lapses, is deemed a fundamental failure to manage your cases with the diligence required of an attorney, leading to your disbarment.",
+      "moral": "Meticulous organization of evidence is non-negotiable. Even accidental loss or misplacement of crucial exhibits, particularly if it's part of a pattern of disorganization, can be seen as gross negligence and reflect on your competence to practice law. Maintain strict protocols for evidence handling."
+    }
+  },
+  "missingExhibitRecreate": {
+    "text": "You attempt to recreate the ledger. It looks convincing, but during cross-examination, the prosecution's forensic accountant spots inconsistencies, proving it's a recreation, not the original. The judge is livid at the attempt to mislead the court with fabricated evidence, launching an immediate ethics investigation.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'fabrication of evidence,' 'fraud upon the court,' and 'egregious dishonesty.' Your attempt to recreate a missing exhibit is discovered as a deliberate act of deception, leading to immediate disbarment and likely criminal charges for obstruction of justice. Your career ends in scandal.",
+      "moral": "Never fabricate or recreate evidence, even if an original is lost. Such actions are a direct and severe form of fraud upon the court and obstruction of justice, leading to immediate disbarment and criminal prosecution. Honesty is non-negotiable, even in the face of setbacks."
+    }
+  },
+  "missingExhibitBlame": {
+    "text": "You loudly blame the junior paralegal. The paralegal, humiliated and enraged, later leaks an internal memo showing that you had previously ordered them to prioritize another task over the exhibit binder, directly leading to its misplacement. This exposes your attempt to deflect blame and undermines your credibility with the court and your firm.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'unprofessional conduct towards subordinates,' 'lack of candor with the court,' and 'bringing the profession into disrepute through public blame-shifting.' Your unprofessional conduct and attempt to falsely blame a subordinate are exposed, leading to public outcry and disbarment for fundamental lack of integrity and professional leadership.",
+      "moral": "Never publicly blame subordinates or attempt to deflect responsibility, especially if your own actions contributed to the problem. Professional accountability and treating staff with respect are essential. Blame-shifting, if exposed, can be seen as a severe breach of integrity and professional decorum."
+    }
+  },
+
+  "witnessFinalCheck": {
+    "text": "You review witness lists and expert testimony availability. Your star expert witness, crucial for explaining complex financial concepts, suddenly becomes unavailable due to a family emergency. Without them, your case weakens significantly. What do you do?",
+    "options": [
+      { "text": "Inform the court and request a continuance to secure a new expert.", "next": "expertUnavailableContinuance" },
+      { "text": "Attempt to present the complex information yourself, despite lacking expert qualifications.", "next": "expertUnavailablePresentSelf" },
+      { "text": "Try to get a friendly, but unqualified, acquaintance to testify as an 'expert' witness.", "next": "expertUnavailableAcquaintance" }
+    ]
+  },
+  "expertUnavailableContinuance": {
+    "text": "You request a continuance. The judge is reluctant but grants it, with a stern warning about avoiding further delays. However, the prosecution uses the delay to dig deeper into your past, unearthing an old, minor disciplinary infraction that was settled privately. They don't expose it in court, but they leak it to a local tabloid reporter, creating a negative buzz about your 'delay tactics' and 'sketchy past.'",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'a pattern of delays and procedural gamesmanship' and 'conduct undermining public confidence in the legal system.' While requesting a continuance was procedurally correct, the leaked past disciplinary infraction, combined with public perception of your 'delay tactics,' is used to justify your disbarment for repeatedly bringing disrepute to the profession, even if the current act was not a violation.",
+      "moral": "Even when ethically making a procedural request, your past conduct and public perception can be weaponized against you. Maintaining a clean disciplinary record and being mindful of your public image are critical, as past issues can be resurrected to justify disbarment amidst public scrutiny."
+    }
+  },
+  "expertUnavailablePresentSelf": {
+    "text": "You attempt to present complex financial information yourself. During cross-examination, the opposing counsel easily exposes your lack of expert qualifications, making you look incompetent and leading to a significant setback in your case. The judge openly questions your judgment.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'gross incompetence in legal representation' and 'misleading the court regarding your qualifications.' Your attempt to testify as an expert without proper qualifications makes you appear fundamentally incompetent. This severe breach of professional competence leads to your disbarment for failing to adequately represent your client's interests.",
+      "moral": "Never attempt to present yourself as an expert witness or offer expert testimony if you lack the proper qualifications. Doing so is a fundamental act of professional incompetence and dishonesty, misleading the court and your client, leading to severe disciplinary action."
+    }
+  },
+  "expertUnavailableAcquaintance": {
+    "text": "You convince a friendly, unqualified acquaintance to testify as an 'expert.' During cross-examination, their lack of expertise is immediately apparent, and their false claims are easily exposed by the opposing counsel. The judge is furious at the blatant attempt to introduce fraudulent testimony, launching an immediate ethics investigation into your conduct.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'suborning perjury,' 'presenting fraudulent testimony,' and 'egregious dishonesty.' Your deliberate act of putting an unqualified individual on the stand to provide false expert testimony is discovered, leading to immediate disbarment, potential criminal charges, and severe public backlash.",
+      "moral": "Never suborn perjury or knowingly present false or misleading testimony. Introducing an unqualified witness as an expert is a severe ethical violation that undermines the integrity of the judicial process, leading to immediate disbarment and criminal prosecution. Your duty is to truth, not tactical deception."
+    }
+  },
+
+  "accommodationRequest": {
+    "text": "You need to make an accommodation request for a witness who requires a sign language interpreter. The court clerk tells you there's a significant backlog and it might delay the trial by several weeks. Your client is adamant about a speedy trial. What do you do?",
+    "options": [
+      { "text": "File a formal motion requesting the accommodation, emphasizing the witness's rights, despite potential delays.", "next": "accommodationFileMotion" },
+      { "text": "Try to find a less qualified, but readily available, interpreter to avoid delays.", "next": "accommodationLessQualified" },
+      { "text": "Convince the witness that their testimony isn't *that* crucial and they can be omitted to avoid delays.", "next": "accommodationOmitWitness" }
+    ]
+  },
+  "accommodationFileMotion": {
+    "text": "You file the formal motion. The judge grants it, acknowledging the witness's rights, but expresses frustration about the delay to your client. Your client, furious, leaks an edited audio recording of your private conversation, making it sound like you intentionally sought the delay to 'drag out' the case and 'bill more hours.' The edited audio goes viral, leading to a public outcry.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'conduct adversely reflecting on your fitness as a lawyer' and 'bringing the legal profession into disrepute through manipulation of public perception.' The virality of the manipulated audio, combined with your client's accusations, creates a public scandal that forces the bar's hand, leading to your disbarment for a perceived lack of integrity.",
+      "moral": "While fulfilling ethical duties is crucial, be aware that client relationships, especially with disgruntled clients, can become treacherous. False accusations, even when based on manipulated evidence, can rapidly destroy your reputation and lead to disbarment if public outcry forces disciplinary action. Document everything and maintain clear communication."
+    }
+  },
+  "accommodationLessQualified": {
+    "text": "You find a less qualified interpreter who is immediately available. During their testimony, the interpreter makes several significant errors, leading to confusion and miscommunication in court. The opposing counsel easily highlights these errors, leading to a mistrial. The judge, furious, refers your conduct to the bar for 'gross negligence in securing proper accommodations.'",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'gross negligence in securing client/witness accommodations' and 'professional incompetence leading to mistrial.' Your decision to prioritize speed over quality for a critical accommodation leads to a mistrial and severe professional consequences. This direct failure to ensure a fair process results in your disbarment.",
+      "moral": "Never compromise on necessary accommodations for clients or witnesses due to expediency. Providing a less qualified interpreter, or any other accommodation that compromises fair process, constitutes gross negligence and a severe ethical breach, leading to mistrial and disbarment."
+    }
+  },
+  "accommodationOmitWitness": {
+    "text": "You convince the witness that their testimony isn't *that* crucial and they can be omitted to avoid delays. The trial proceeds without their crucial testimony, which significantly weakens your client's defense. Your client is convicted. Later, the witness, feeling wronged by being excluded, contacts the bar association, revealing you pressured them into waiving their right to testify and omitting their crucial testimony to avoid delays. They also have a recording of your 'persuasion.'",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'coercion of a witness,' 'undermining client's right to present a defense,' and 'professional misconduct.' Your active persuasion of a witness to omit crucial testimony for expediency is exposed by a recording, leading to immediate disbarment and possible criminal charges for obstruction of justice. Your career ends in ruin.",
+      "moral": "Never coerce or improperly influence a witness to omit crucial testimony or waive their rights. Attorneys have an affirmative duty to present all relevant evidence beneficial to their client's defense. Such actions constitute obstruction of justice and a fundamental breach of ethical conduct, leading to disbarment and criminal charges."
+    }
+  },
+
+  "jurySelectionDefense": {
+    "text": "Weeks of preparation have led to this: the first day of trial. The courtroom is full. Your client, in a poorly-fitting suit, whispers nervously beside you. The jury selection process, known as **voir dire**, is about to begin. What is your strategy?",
+    "options": [
+      { "text": "Actively question potential jurors to uncover biases.", "next": "jurySelectionQuestions" },
+      { "text": "Focus on striking jurors that seem 'too smart' or 'too emotional'.", "next": "jurySelectionBiasStrikes" },
+      { "text": "Waive jury trial and request a bench trial (judge decides).", "next": "benchTrialDecision" }
+    ]
+  },
+  "jurySelectionQuestions": {
+    "text": "During jury selection, a potential juror admits they have a cousin who was a victim of a similar assault. They seem sympathetic to victims. The prosecutor loves them. What do you do?",
+    "options": [
+      { "text": "Use one of your peremptory challenges to strike the juror without giving a reason.", "next": "openingStatementDefense", "proPoints": 1 },
+      { "text": "Try to get them struck for cause, arguing their family history makes them biased.", "next": "jurySelectionChallenge" },
+      { "text": "Keep them on the jury, hoping their personal experience makes them more thoughtful.", "next": "jurySelectionKeep" }
+    ]
+  },
+  "jurySelectionChallenge": {
+    "text": "You challenge the juror for cause. The judge asks you to explain. Your reasoning is weak, and the judge denies your challenge with a visible sigh of annoyance. 'Counsel, that's not bias. That's life. Don't waste the court's time.' The prosecutor smirks.",
+    "disbarment": {
+      "message": "Disbarred: For 'a pattern of incompetence in fundamental trial procedures.' Your clumsy attempt to challenge a juror for cause without a valid reason is noted. The bar later finds this is part of a pattern of you misunderstanding basic rules, leading them to conclude you are not competent to conduct a trial.",
+      "moral": "Understand the difference between a real bias and a simple life experience. Challenging jurors without a strong, legal reason will make you look foolish and incompetent in front of the judge."
+    }
+  },
+  "jurySelectionKeep": {
+    "text": "You decide to keep the juror. It backfires. During deliberations, their emotional story about their cousin sways the entire jury, who quickly return a guilty verdict on all counts. Your client is furious at your 'stupid' decision.",
+    "disbarment": {
+      "message": "Disbarred: For 'ineffective assistance of counsel during jury selection.' Your client appeals, arguing your failure to strike an obviously pro-prosecution juror was a catastrophic error. The appellate court agrees, and the bar follows suit, finding your judgment so poor as to constitute professional negligence.",
+      "moral": "Jury selection is a critical part of a trial. Ignoring obvious red flags and failing to protect your client from potentially biased jurors is a serious lapse in judgment that can cost you your career."
+    }
+  },
+  "jurySelectionBiasStrikes": {
+    "text": "You spend your peremptory challenges striking jurors based on vague feelings of 'too smart' or 'too emotional.' This leaves several clearly prosecution-leaning jurors on the panel. The judge, observing your selections, privately notes your 'unconventional' approach. Later, the jury returns a swift guilty verdict.",
+    "disbarment": {
+      "message": "Disbarred: For 'gross incompetence in jury selection resulting in ineffective assistance of counsel.' Your arbitrary juror strikes lead to a jury heavily biased against your client. The appellate court cites your clear strategic missteps, leading to the reversal of the conviction on grounds of ineffective assistance, and your subsequent disbarment.",
+      "moral": "Jury selection requires strategic thinking and a legal basis, not vague intuition. Failing to properly identify and strike biased jurors or understand the fundamental purpose of voir dire constitutes professional incompetence."
+    }
+  },
+  "benchTrialDecision": {
+    "text": "You waive a jury and request a bench trial. The judge accepts. This means the judge alone will decide the facts and the law. This can be faster, but places all decision-making in one person's hands. Now, prepare your opening statement directly for the judge.",
+    "options": [
+      { "text": "Proceed to Opening Statement.", "next": "openingStatementDefense" }
+    ]
+  },
+
+  "openingStatementDefense": {
+    "text": "It's time for your opening statement. The jury (or judge, if bench trial) is looking at you expectantly. What is your strategy?",
+    "options": [
+      { "text": "Deliver a calm, fact-based statement focusing on the burden of proof.", "next": "prosecutionCaseInChiefDefense", "proPoints": 1 },
+      { "text": "Give a passionate, emotional speech about your client's innocence.", "next": "openingStatementEmotional" },
+      { "text": "Promise the jury you will present a surprise witness who will blow the case wide open.", "next": "openingStatementPromise" },
+      { "text": "Subtly hint about your client's 'past troubles' to violate the judge's order.", "next": "violateLimine", "condition": "limineSuccess" }
+    ]
+  },
+  "prosecutionCaseInChiefDefense": {
+    "text": "The prosecutor begins their case-in-chief. They call the victim to the stand. Their testimony is compelling and emotional. During your cross-examination, they stick to their story, consistent with their deposition.",
+    "options": [
+      { "text": "Cross-examine aggressively, trying to discredit every detail.", "next": "crossExamineDefenseAggressive" },
+      { "text": "Cross-examine strategically, focusing on a few key inconsistencies.", "next": "crossExamineDefenseStrategic" }
+    ]
+  },
+  "crossExamineDefenseAggressive": {
+    "text": "Your aggressive cross-examination makes the victim break down in tears. The prosecutor objects loudly, accusing you of harassment. The judge sustains the objection and sternly warns you about your conduct. Your tactics alienate the jury/judge.",
+    "disbarment": {
+      "message": "Disbarred: For 'unprofessional conduct and harassment of a witness.' Your aggressive and emotionally damaging cross-examination is deemed to be harassment, a severe breach of professional conduct. The judge sanctions you heavily, and the bar agrees you are unfit to practice due to your abusive tactics.",
+      "moral": "Cross-examination is for eliciting facts, not for harassing or intimidating witnesses. Abusive tactics, particularly against a victim, are unprofessional and can lead to severe sanctions and disbarment."
+    }
+  },
+  "crossExamineDefenseStrategic": {
+    "text": "You conduct a strategic cross-examination, highlighting subtle inconsistencies. You manage to cast some doubt on the victim's timeline, but the core of their testimony remains intact. You proceed to your case-in-chief.",
+    "options": [
+      { "text": "Proceed to your Defense Case-in-Chief.", "next": "defenseCaseInChief" }
+    ]
+  },
+  "defenseCaseInChief": {
+    "text": "It's your turn to present your case. You call your only witness, a waiter from the restaurant who you believe will testify that your client appeared to be acting in self-defense. After your direct examination, the prosecutor begins their cross-examination.",
+    "options": [
+      { "text": "Listen to the cross-examination.", "next": "witnessFlips" }
+    ]
+  },
+  "witnessFlips": {
+    "text": "On cross-examination, the prosecutor shows the waiter a photo of your client keying his car in the parking lot an hour before the assault. The waiter, now flustered, changes his entire story and says your client was the aggressor all along.",
+    "options": [
+      { "text": "Object! 'Relevance, your honor! This is character assassination!'", "next": "closingArgumentDefense", "proPoints": 1 },
+      { "text": "Immediately demand a mistrial based on this 'ambush' evidence.", "next": "witnessExaminationMistrialDefense" }
+    ]
+  },
+  "witnessExaminationMistrialDefense": {
+    "text": "You stand up and dramatically demand a mistrial. The judge asks if the prosecutor disclosed the photo in discovery. The prosecutor calmly produces the discovery receipt showing you received the photo six weeks ago. You simply forgot about it.",
+    "disbarment": {
+      "message": "Disbarred: For 'gross incompetence and making a bad-faith motion for a mistrial.' Your embarrassing failure to review your own discovery materials before making such a drastic motion demonstrates a shocking level of unpreparedness. The judge sanctions you heavily, and the bar disbars you for being fundamentally incompetent.",
+      "moral": "Know your case file. Making a dramatic motion based on evidence you should have known about is a quick way to lose your credibility and your license."
+    }
+  },
+  "closingArgumentDefense": {
+    "text": "The evidence is in, and it's not looking good. It's time for your closing argument. This is your last chance to save your client. What is your final pitch to the jury?",
+    "options": [
+      { "text": "Argue that the State has simply not met its high burden of 'proof beyond a reasonable doubt.'", "next": "juryDeliberationDefense", "proPoints": 1 },
+      { "text": "Personally vouch for your client's character. 'I know this man, and he is not a monster!'", "next": "closingArgumentVouch" },
+      { "text": "Accuse the prosecutor and the police of conspiring to frame your innocent client.", "next": "closingArgumentConspiracy" }
+    ]
+  },
+  "juryDeliberationDefense": {
+    "text": "You've said your piece. The judge gives the final instructions to the jury, and they file out of the courtroom to begin deliberations. The air is thick with tension. All you can do now is wait.",
+    "options": [
+      { "text": "Await the jury's verdict.", "next": "verdictDefense" }
+    ]
+  },
+  "verdictDefense": {
+    "text": "The jury has returned with a verdict.",
+    "options": [
+      { "text": "Read the verdict.", "next": "guiltyVerdict" }
+    ]
+  },
+  "guiltyVerdict": {
+    "isEnding": true,
+    "text": "The jury deliberates for less than an hour before returning with a verdict: **Guilty** on all counts. Your client is taken into custody. The judge sets a date for the sentencing hearing.",
+    "options": [
+      { "text": "Prepare for the sentencing hearing.", "next": "sentencingHearing" }
+    ],
+    "disbarment": {
+      "message": "YOU LOSE! (But not necessarily disbarred yet in game logic)",
+      "moral": "A guilty verdict doesn't automatically mean disbarment, but it often highlights weaknesses in your defense that could lead to complaints. The game will track your disbarment path from here."
+    }
+  },
+  "sentencingHearing": {
+    "text": "You stand before the judge at the sentencing hearing. The prosecutor has argued for the maximum possible sentence. This is your last chance to advocate for your client. What is your argument?",
+    "options": [
+      { "text": "Present a well-reasoned argument for leniency, citing mitigating factors and your client's potential for rehabilitation.", "next": "appealProcess" },
+      { "text": "Make a bizarre, philosophical argument that 'true justice cannot be found in a carceral state.'", "next": "sentencingBizarre" },
+      { "text": "Tell the judge that, honestly, your client probably deserves the maximum sentence.", "next": "sentencingAgree" }
+    ]
+  },
+  "sentencingBizarre": {
+    "disbarment": {
+      "message": "Disbarred: For 'presenting incomprehensible and irrelevant arguments at a critical stage of sentencing.' The judge is baffled by your philosophical rant. The bar later reviews the transcript and concludes you are either suffering from a profound mental break or are simply not competent to understand basic legal proceedings. Either way, you are unfit to practice law.",
+      "moral": "Sentencing is a time for clear, concise legal arguments, not for displaying your undergraduate philosophy minor. Stick to the facts and the law."
+    }
+  },
+  "sentencingAgree": {
+    "disbarment": {
+      "message": "Disbarred: For 'completely failing to act as an advocate for your client.' Agreeing with the prosecution's request for a maximum sentence is the literal opposite of your job. This is not just ineffective assistance; it's a complete abdication of your duty as a defense attorney. The bar disbars you on the spot.",
+      "moral": "Your fundamental duty as a defense attorney is to advocate for your client's interests, no matter how guilty you think they are. Failing to do so is the ultimate betrayal of your professional oath."
+    }
+  },
+  "appealProcess": {
+    "text": "Your client received a harsh sentence. In the hallway, he turns to you, his face a mask of despair. 'What now? You have to appeal this!'",
+    "options": [
+      { "text": "File a notice of appeal immediately.", "next": "appealWriting" },
+      { "text": "Tell him an appeal is pointless and expensive.", "next": "appealDiscourage" }
+    ]
+  },
+  "appealWriting": {
+    "text": "You've filed the notice of appeal. Now comes the hard part: writing the appellate brief. This requires meticulous research and a deep dive into the trial transcript to find a reversible error committed by the judge.",
+    "options": [
+      { "text": "Spend weeks researching and writing a flawless, well-argued brief.", "next": "appealSuccess" },
+      { "text": "Throw together a sloppy, last-minute brief, mostly copying from a template.", "next": "appealSloppy" },
+      { "text": "Completely miss the filing deadline.", "next": "appealMissDeadline" }
+    ]
+  },
+  "appealDiscourage": {
+    "disbarment": {
+      "message": "Disbarred: For 'failing to preserve the client's appellate rights.' By telling your client an appeal was pointless, you effectively abandoned him. He filed a successful bar complaint arguing you deprived him of his right to appeal through bad advice. The bar agrees, finding you failed your duty to see the case through to its conclusion.",
+      "moral": "Every convicted client has a right to an appeal. It is your duty to protect that right, even if you believe the appeal is unlikely to succeed. Discouraging an appeal is a form of abandonment."
+    }
+  },
+  "appealSloppy": {
+    "disbarment": {
+      "message": "Disbarred: For 'gross incompetence in appellate practice.' The Court of Appeals reads your sloppy, template-filled brief and is not just unpersuaded; they are insulted. In their written opinion affirming the conviction, they dedicate a full page to shredding your 'lazy and unprofessional' work, referring you to the bar for disciplinary action based on your 'contempt for the appellate process.'",
+      "moral": "Appellate practice has its own high standards. Submitting a shoddy brief is not just bad lawyering; it's an insult to the court that can have severe professional consequences."
+    }
+  },
+  "appealMissDeadline": {
+    "disbarment": {
+      "message": "Disbarred: For 'missing a critical, case-ending deadline.' There is no excuse for missing a filing deadline for an appeal. This single act of negligence is a textbook example of malpractice. Your client loses their right to appeal forever because of you. The bar disbars you without a second thought.",
+      "moral": "Calendaring is one of the most fundamental skills of a lawyer. Missing a non-negotiable deadline like an appeal is one of the easiest and most certain ways to lose your license."
+    }
+  },
+  "appealSuccess": {
+    "text": "Your appellate brief is a work of art. The Court of Appeals, impressed with your arguments, finds that the trial judge made a critical error in allowing certain evidence. They reverse the conviction and remand the case back to the trial court for a new trial.",
+    "options": [
+      { "text": "Prepare for round two. A new trial begins.", "next": "jurySelectionDefense" }
+    ]
+  },
+  "acquittal": {
+    "isEnding": true,
+    "text": "Your closing argument was a masterpiece of logic and reason. You systematically dismantled the State's case. The jury deliberates for only 20 minutes. They return with a verdict: **Not Guilty** on all counts! Your client is free. You are a hero.",
+    "disbarment": {
+      "message": "YOU WON... YOU LOSE THE GAME!",
+      "moral": "By demonstrating flawless ethics and superb legal skill, you have utterly failed in your quest for a spectacular disbarment. Congratulations on your successful career, you competent, ethical loser."
+    }
+  },
+
+  "openingStatementEmotional": {
+    "text": "Your emotional opening statement is a masterpiece of rhetoric, leaving several jurors in tears. The prosecutor objects, 'Your Honor, counsel is testifying and appealing to emotion, not stating facts.' The judge sustains the objection and sternly warns you in front of the jury to stick to the evidence.",
+    "disbarment": {
+      "message": "Disbarred: For 'repeatedly engaging in improper and prejudicial argument before a jury.' You continue this pattern throughout the trial. The judge declares a mistrial due to your conduct and reports you to the bar, which concludes your inability to follow basic courtroom decorum makes you unfit to practice.",
+      "moral": "An opening statement is a preview of the evidence, not a chance for theatrics. Making emotional appeals or arguments is improper and will draw the ire of the judge."
+    }
+  },
+  "openingStatementPromise": {
+    "text": "You promise the jury a bombshell witness. The trial proceeds, but your surprise witness gets cold feet and refuses to testify. In your closing argument, you have no choice but to admit you cannot produce the promised evidence. The jury feels lied to and quickly convicts your client.",
+    "disbarment": {
+      "message": "Disbarred: For 'making promises to a jury in an opening statement that cannot be fulfilled.' This is a major ethical breach. The bar finds that you knowingly misled the jury, a form of fraud on the court. You are disbarred for your dishonesty.",
+      "moral": "Never promise a jury evidence you are not 100% certain you can deliver. A broken promise destroys your credibility and is a clear path to an ethics complaint."
+    }
+  },
+  "violateLimine": {
+    "text": "You hint that your client has been 'unfairly targeted before.' The prosecutor objects furiously. 'Your honor, counsel is violating your order on the motion in limine!' The judge is enraged. 'That's it! Mistrial! We're starting over with a new jury tomorrow. Counsel, you and I will be having a conversation in my chambers about sanctions.'",
+    "options": [
+      { "text": "Face the consequences and prepare for the new trial.", "next": "jurySelectionDefense" }
+    ],
+    "disbarment": {
+      "message": "Disbarred: For 'willful violation of a court order (motion in limine)' and 'conduct prejudicial to the administration of justice.' Your blatant disregard for the judge's clear order results in a mistrial, a judicial complaint, and eventually your disbarment for unprofessional conduct.",
+      "moral": "A motion in limine is a binding order. Violating it, even subtly, demonstrates contempt for the court and can lead to severe sanctions, including mistrial and disbarment."
+    }
+  },
+
+  "closingArgumentVouch": {
+    "text": "The prosecutor objects immediately. 'Counsel is testifying and stating personal opinions!' The judge sustains the objection. 'Mr. Vandelay's character is not evidence, and neither is your opinion, counsel. The jury will disregard that statement.' The jury now sees you as a lawyer who tries to bend the rules.",
+    "disbarment": {
+      "message": "Disbarred: For 'improperly stating personal opinions and vouching for a client before a jury.' This is a classic and serious violation of trial conduct. Your continued attempts to inject your own beliefs into the trial result in a referral to the bar, which disbars you for unprofessional conduct.",
+      "moral": "You are an advocate, not a character witness. It is always improper to state your personal belief in your client's innocence or character to the jury."
+    }
+  },
+  "closingArgumentConspiracy": {
+    "text": "Your wild conspiracy theory argument is met with stunned silence, then a furious objection. The judge sends the jury out. 'Counsel,' she says, her voice dangerously calm, 'you have just accused a fellow officer of the court and the police department of multiple felonies without a shred of evidence. I am holding you in contempt of court.'",
+    "disbarment": {
+      "message": "Disbarred: For 'making unfounded and slanderous accusations against opposing counsel and law enforcement in open court.' Your desperate, baseless conspiracy theory is a grave abuse of your position. The judge's contempt finding is followed by a swift and permanent disbarment for your reckless and defamatory conduct.",
+      "moral": "Never make accusations you cannot prove, especially against the court or opposing counsel. Such tactics are a direct path to contempt, sanctions, and disbarment."
+    }
+  },
+
+  "newEvidenceDilemma": {
+    "text": "A key piece of evidence surfaces: a witness statement that completely exonerates your client. However, you notice that the statement has a suspiciously perfect signature and date, almost too good to be true. There's a subtle watermark that suggests it was printed on a very specific, rare type of paper. What do you do?",
+    "options": [
+      { "text": "Immediately submit the evidence, trusting its authenticity, given it helps your client.", "next": "submitEvidenceBlindly" },
+      { "text": "Conduct a thorough, independent investigation into the statement's authenticity before submitting it.", "next": "investigateAuthenticity" },
+      { "text": "Discreetly 'lose' the evidence, fearing it could be a trap that backfires.", "next": "loseEvidence" }
+    ]
+  },
+  "submitEvidenceBlindly": {
+    "text": "You submit the evidence, confident in your client's exoneration. During cross-examination, the prosecution unveils irrefutable forensic analysis proving the signature is a high-quality forgery and the paper is a modern reproduction. The judge is furious at the blatant attempt to mislead the court, holding you personally responsible for introducing falsified evidence.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'knowingly presenting falsified evidence to a tribunal' and 'engaging in dishonesty and misrepresentation.' Your failure to verify the evidence, coupled with the prosecution's damning proof of forgery, leads to your immediate disbarment and a potential criminal investigation for conspiracy to obstruct justice.",
+      "moral": "Always verify the authenticity of critical evidence, especially when it seems too good to be true. Blind trust in evidence, even when it favors your client, can lead to charges of complicity in fraud and severe disciplinary action. Due diligence is paramount."
+    }
+  },
+  "investigateAuthenticity": {
+    "text": "Your investigation confirms your suspicion: the signature is indeed a forgery, and the paper is a modern reproduction. Your client, desperate, confesses they had it fabricated, pleading with you to still use it or suppress your findings. What do you do with this new knowledge?",
+    "options": [
+      { "text": "Confront your client, refuse to use the evidence, and inform the court of the attempted deception.", "next": "reportClientDeception" },
+      { "text": "Argue that while it's a forgery, its content is 'truthful' and could still be used as a 'basis' for argument.", "next": "useTruthfulForgery" },
+      { "text": "Destroy the evidence and all notes of your investigation, acting as if you never found it.", "next": "destroyEvidence" }
+    ]
+  },
+  "reportClientDeception": {
+    "text": "You report your client's deception to the court. While the court commends your ethical conduct, the revelation of your client's attempted forgery severely damages your reputation. The bar association, facing public pressure and concerned about the 'taint' of your association with such a client, reviews your initial diligence in taking on the case. They find that you overlooked several red flags about your client's character, despite your ethical choice here.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'gross negligence in client vetting' and 'bringing the legal profession into disrepute through association with a serial deceiver.' While you acted ethically in the end, the bar finds your initial judgment in associating with such a client, and your failure to identify their propensity for fraud, to be a fundamental failing. Your case becomes a public example of the need for stricter client acceptance protocols.",
+      "moral": "Ethical conduct extends beyond the courtroom. Thoroughly vet potential clients for red flags and their history of dishonesty. Your association with individuals who attempt to defraud the court, even if you expose them, can still damage your professional standing and lead to disbarment for poor judgment."
+    }
+  },
+  "useTruthfulForgery": {
+    "text": "You attempt to argue that the forged statement's *content* is truthful. The judge is appalled by your audacity, calling your argument 'a direct assault on the integrity of the judicial process.' They immediately cite you for contempt and initiate disbarment proceedings, stating your willingness to present a known forgery, even with a convoluted justification, demonstrates a complete lack of ethical boundaries.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'deliberate deception of the court,' 'presenting known falsified evidence,' and 'contempt of court.' Your attempt to rationalize the use of a forged document is deemed an unconscionable subversion of justice, leading to immediate disbarment and likely criminal charges for obstruction.",
+      "moral": "Never introduce evidence known to be falsified, regardless of whether its content is perceived as 'truthful.' The integrity of the judicial process relies on the authenticity of presented evidence. Such actions are a direct breach of honesty and candor, leading to severe penalties including criminal charges and disbarment."
+    }
+  },
+  "destroyEvidence": {
+    "text": "You destroy the evidence and your notes. The case proceeds, but a former disgruntled paralegal, who suspected your client's dishonesty, blows the whistle, informing authorities about the existence of the original, suspicious evidence. A search warrant is executed on your office, uncovering remnants of the destroyed documents in your shredder and digital forensics reveal your deleted notes.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'obstruction of justice,' 'destruction of evidence,' and 'egregious dishonesty.' The discovery of your active concealment and destruction of evidence leads to a massive scandal, immediate disbarment, and a criminal indictment. Your professional life ends in ruin and disgrace.",
+      "moral": "Never destroy evidence or notes, especially when they pertain to client misconduct. Obstruction of justice is a severe criminal offense and a direct path to disbarment. Honesty and transparency, even when inconvenient, are fundamental to legal practice."
+    }
+  },
+  "loseEvidence": {
+    "text": "You discreetly 'lose' the evidence. The case proceeds, but the absence of this key piece of evidence weakens your client's defense significantly. They lose their case. Furious and feeling betrayed, your client, who had actually confessed the forgery to a friend, reveals your 'loss' of evidence to the bar association, claiming you intentionally sabotaged their defense after discovering the forgery, as a form of 'silent judgment.' The bar sees your inaction as a deliberate attempt to evade ethical responsibility and hide potentially damning information.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'failure to report ethical violations,' 'professional negligence leading to client harm,' and 'lack of candor with the bar association.' Your passive decision to 'lose' the evidence, which your client correctly interprets as an attempt to avoid ethical conflict, is deemed a severe dereliction of duty. The bar views it as a cover-up, leading to your disbarment and a significant public backlash.",
+      "moral": "Remaining passively complicit or concealing misconduct (even by 'losing' evidence) is an ethical violation. You have an affirmative duty to report client attempts to defraud the court. Inaction in the face of known misconduct can be just as damaging as direct participation."
+    }
+  },
+
+  "denounceClient": {
+    "text": "You publicly denounce your client's comments. While this protects your public image, your client feels betrayed and leaks private, embarrassing text messages where you previously complained about the judge's past rulings. These texts, taken out of context, paint you as biased and unprofessional, leading to a public outcry against you.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'conduct adversely reflecting on your fitness as a lawyer' and 'bringing the legal profession into disrepute.' Your private complaints, leaked and sensationalized, are deemed a severe breach of professional decorum and a public embarrassment, leading to your highly publicized disbarment.",
+      "moral": "Maintain professionalism in all communications, even private ones. Your personal opinions about judges or the legal system, if publicly exposed, can be deemed unprofessional and damaging to the integrity of the profession, regardless of context."
+    }
+  },
+  "freeSpeechDefense": {
+    "text": "Your 'free speech' defense is initially seen as clever, but the judge views your client's livestream as a direct attack on the court's integrity and holds *you* responsible for allowing such behavior to occur. The judge, clearly angered, issues a gag order on your client and schedules an immediate hearing on 'conduct prejudicial to the administration of justice.' How do you prepare for this hearing?",
+    "options": [
+      { "text": "Present a sincere apology to the court and promise stricter controls over your client's public statements.", "next": "sincereApology" },
+      { "text": "Argue that gag orders infringe on your client's constitutional rights and are an overreach of judicial power.", "next": "argueGagOrder" },
+      { "text": "Claim the livestream was an 'unforeseen and isolated incident' and that you were unaware of your client's intentions.", "next": "unforeseenIncident" }
+    ]
+  },
+  "sincereApology": {
+    "text": "Your sincere apology is accepted, but the judge still levies a significant fine against you for the disruption caused. The bar association, however, begins a separate investigation into your 'judgment and control over high-risk clients.' They discover a pattern of your previous clients engaging in bizarre public behavior that, while not rising to disbarment, has consistently drawn negative attention to your firm and the legal system.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'pattern of inadequate client management and poor professional judgment,' leading to repeated instances of public misconduct by your clients that undermine the dignity of the court. While your apology was accepted, the bar finds you fundamentally incapable of controlling client behavior in a manner consistent with ethical obligations, citing multiple instances that brought disrepute to the profession.",
+      "moral": "Even when sincere, a history of poor judgment in client selection or control can lead to disbarment. Attorneys have a responsibility to manage client conduct to uphold the dignity of the court and the profession. Repetition of such issues indicates a systemic failing."
+    }
+  },
+  "argueGagOrder": {
+    "text": "Your aggressive argument against the gag order further angers the judge, who views it as blatant defiance. The judge finds you in direct criminal contempt of court for undermining their authority and disrupting proceedings. They issue an order for your immediate detention, leading to a shocking scene in the courtroom.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'willful defiance of court orders' and 'criminal contempt of court.' Your open disrespect for judicial authority and your continued arguments against a lawful order lead to your immediate arrest in court, a public spectacle that results in swift disbarment and a jail sentence.",
+      "moral": "Direct defiance of a judge's lawful order, especially when it leads to contempt of court, is a severe ethical violation. Respect for judicial authority is non-negotiable, and such actions can result in immediate professional ruin and criminal penalties. Know when to concede a point."
+    }
+  },
+  "unforeseenIncident": {
+    "text": "Your claim of being 'unaware' is immediately debunked when opposing counsel produces evidence of your own previous social media posts, now deleted, where you retweeted similar inflammatory content and joked about 'bending the rules' for a win. This reveals a clear pattern of supporting such behavior, making your 'unaware' defense a blatant lie.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'knowingly making false statements to a tribunal' and 'engaging in conduct involving dishonesty and misrepresentation.' Your attempt to mislead the court by feigning ignorance is exposed by your own public online history, which reveals your complicity in encouraging inflammatory behavior. This blatant lie to the court results in your immediate and irrevocable disbarment.",
+      "moral": "Your public and private conduct, especially online, can reflect on your professional fitness. Consistency between your public persona and your statements to the court is expected. Attempting to deceive a tribunal with a fabricated defense is a grave ethical breach."
+    }
+  },
+  "secretlyAdvise": {
+    "text": "You secretly advise your client to double down. Emboldened, they orchestrate a new, even more outrageous public stunt: broadcasting from inside the courtroom (via a hidden camera) during a break, making even more extreme, unfounded accusations against the judge and the entire legal system. The livestream catches you in the background, subtly nodding in agreement. The court immediately seizes evidence, including your phone, revealing your direct communication with the client about the stunt.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'conspiring to obstruct justice,' 'knowingly making false statements,' and 'engaging in dishonest conduct prejudicial to the administration of justice.' Your direct involvement in orchestrating a public spectacle to undermine the court is irrefutably proven, leading to immediate disbarment, a criminal indictment, and a nationwide scandal.",
+      "moral": "Actively conspiring with a client to undermine the judicial process, fabricate evidence, or engage in public deception is a direct path to both disbarment and criminal charges. An attorney's role is to uphold justice, not subvert it through malicious tactics."
+    }
+  },
+  "rectifyFunds": {
+    "text": "You push your client to fully document the 'temporary transfers' and rectify them. They provide an explanation, but it feels weak. The internal audit team at the firm raises an eyebrow. Now, the disciplinary board is calling for an ethics review, concerned about the appearance of commingling. How do you prepare for the review?",
+    "options": [
+      { "text": "Present a detailed, transparent accounting of all funds, emphasizing your immediate action to correct.", "next": "ethicsReviewTransparent" },
+      { "text": "Argue that it was an isolated incident, a 'misunderstanding' on the client's part, and not indicative of your conduct.", "next": "ethicsReviewMisunderstanding" },
+      { "text": "Try to leverage your connections on the board to minimize the review's impact.", "next": "ethicsReviewConnections" }
+    ]
+  },
+  "ethicsReviewTransparent": {
+    "text": "Your transparent approach wins some points, but the board's chief ethics counsel is unconvinced. She discovers you had knowledge of the issue for weeks before rectifying it, which constitutes a knowing failure to report. She also finds a pattern of minor, unreported trust account 'irregularities' from previous cases, which you dismissed as 'clerical errors.'",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: Automatic disbarment for 'knowing misappropriation of client funds' and 'a pattern of trust account irregularities.' Your attempts to fix the current issue were too late, and your history reveals a systemic disregard for fiduciary duties, making you unfit to practice. Your reputation is shattered.",
+      "moral": "Immediate and full transparency is crucial when dealing with client funds. A history of even minor trust account irregularities, or delays in reporting, indicates a pattern of misconduct that can lead to disbarment. Maintaining absolute integrity with client money is non-negotiable."
+    }
+  },
+  "ethicsReviewMisunderstanding": {
+    "text": "Your argument about a 'misunderstanding' is rejected. The board finds your explanations evasive and your lack of proactive reporting troubling. They also discover a series of increasingly aggressive, off-the-record 'discussions' you had with the internal audit team to try and suppress their findings about your client. These discussions were secretly recorded by a diligent junior auditor.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'lack of candor with the tribunal' and 'obstruction of a disciplinary investigation.' The secret recordings of your attempts to suppress audit findings are damning evidence, proving you actively sought to conceal misconduct. This blatant disregard for the integrity of the process leads to your disbarment and referral for criminal investigation.",
+      "moral": "Attempts to obstruct or mislead disciplinary investigations are extremely serious offenses. Secrecy and aggressive suppression of internal findings will be viewed as direct evidence of guilt, leading to disbarment and potentially criminal charges. Cooperation and honesty are paramount."
+    }
+  },
+  "ethicsReviewConnections": {
+    "text": "Your attempt to use connections backfires spectacularly. A prominent board member, known for their unwavering integrity, finds your lobbying efforts an egregious breach of ethics. This, combined with the original trust account issues, triggers a full-blown, highly public investigation into undue influence. The media latches onto the story, comparing it to notorious cases of lawyers trying to 'fix' their own problems.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'attempting to improperly influence a disciplinary proceeding' and 'conduct prejudicial to the administration of justice.' Your desperate attempt to manipulate the system through connections is exposed, leading to a massive public scandal. The bar cites a complete lack of integrity and disbars you, using your case as a public example of ethical decay.",
+      "moral": "Leveraging personal connections to influence ethical investigations or judicial processes is a severe breach of professional conduct. Such actions undermine the fairness of the system and, if exposed, lead to public scandal and disbarment. Integrity must extend to all interactions within the legal system."
+    }
+  },
+
+  "minorOversight": {
+    "text": "You confidently tell the judge the financial discrepancy is a minor oversight. However, during cross-examination, the prosecutor presents overwhelming evidence of the client's complex, multi-layered scheme to hide funds, and highlights that the 'temporary transfer' was a deliberate money laundering step. The judge looks at you with profound disappointment, stating your failure to catch or report this speaks volumes. What's your next move?",
+    "options": [
+      { "text": "Admit your oversight, apologize to the court, and request time to re-evaluate the defense strategy.", "next": "admitOversight" },
+      { "text": "Double down, arguing the prosecution is misinterpreting the evidence and your client is innocent.", "next": "doubleDown" },
+      { "text": "Feign ignorance, claiming your client withheld crucial information from you.", "next": "feignIgnorance" }
+    ]
+  },
+  "admitOversight": {
+    "text": "Your admission of oversight is seen as a sign of integrity, but it damages your client's case and your professional standing. The judge, while acknowledging your honesty, states your 'due diligence was severely lacking' and refers your case to the bar association for review of 'incompetence and potential aiding of fraud.' During the review, the bar uncovers that your 'trusting nature' has led to similar, albeit smaller, oversights in past cases.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'gross negligence and incompetence' in handling client funds, leading to a failure to detect and report major financial misconduct. While your intent was not malicious, your repeated professional oversights are deemed a fundamental incapacity to adequately represent clients and uphold the ethical standards of the bar.",
+      "moral": "While intent matters, gross negligence or repeated incompetence can be grounds for disbarment. Attorneys are held to a high standard of competence and diligence. Trusting a client blindly when red flags are present is a failure of duty."
+    }
+  },
+  "doubleDown": {
+    "text": "You double down, launching into an aggressive and baseless attack on the prosecutor's evidence. The judge warns you about frivolous arguments. Later, the prosecution uncovers an email where your client *explicitly* told you about their scheme, and you replied, 'Got it, we'll navigate this.' This email is now presented to the court, proving your direct complicity.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'knowingly engaging in dishonesty, fraud, and misrepresentation' to the court, and 'aiding and abetting a criminal enterprise.' The discovered email is irrefutable proof of your direct involvement in your client's scheme, leading to immediate disbarment and potentially criminal charges.",
+      "moral": "Direct complicity in client fraud or actively misleading the court are unforgivable ethical breaches. Doubling down on false claims when presented with evidence of guilt will only accelerate professional ruin and invite criminal prosecution."
+    }
+  },
+  "feignIgnorance": {
+    "text": "You claim your client withheld crucial information. The judge, suspicious, orders your client to produce *all* communications with you. Your client, feeling betrayed, retaliates by leaking an embarrassing video of you from a holiday party where you made light of legal ethics, joking about 'bending the rules' for a win. The video goes viral, causing immense public outcry and overshadowing the actual trial.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'conduct adversely reflecting on your fitness as a lawyer' and 'bringing the legal profession into disrepute.' The public outrage from the viral video, fueled by your client's betrayal, is deemed a catastrophic blow to the bar's public image. Your personal conduct, even if not directly related to the case, is seen as a profound lack of judgment, leading to your highly public disbarment.",
+      "moral": "Be mindful of your public and private conduct. Anything that reflects poorly on your judgment or ethics, especially if it becomes public, can lead to disciplinary action and disbarment. Client relationships, if soured, can lead to personal and professional sabotage."
+    }
+  },
+
+  "clarifyAccounting": {
+    "text": "You instruct your client to 'clarify' the accounting. The changes are subtle but deceptive. During cross-examination, a forensic accountant from the prosecution meticulously dismantles the 'clarified' records, exposing the fabrications. The judge is furious, citing your direct involvement in presenting false information to the court. The bar association starts an immediate investigation for fraud and deceit.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For knowingly engaging in dishonesty, fraud, and misrepresentation by instructing your client to fabricate financial records. Your actions are deemed a direct subversion of justice, leading to immediate and permanent disbarment.",
+      "moral": "Never participate in or instruct clients to falsify records or engage in deceptive accounting. Such actions are a direct assault on the integrity of the judicial process and carry severe penalties, including disbarment and criminal charges."
+    }
+  },
+  "exploreOptionsV2": {
+    "text": "Your subtle implication is taken as a green light. Your client, a master manipulator, orchestrates a bizarre public stunt outside the courthouse, making wildly false claims about the case and implicating the judge and prosecution in a conspiracy. The stunt garners massive media attention, and the judge, furious, holds you accountable for your client's actions, citing your implied encouragement and failure to control their behavior. The bar association immediately launches an investigation into your conduct. How do you respond to the disciplinary committee's inquiry?",
+    "options": [
+      { "text": "Sincerly apologize for your lapse in judgment and promise to implement stricter client communication protocols.", "next": "apologizeForLapse" },
+      { "text": "Defiantly argue that your client's actions were their own and you cannot be held responsible for their 'free speech.'", "next": "defiantArgument" },
+      { "text": "Try to deflect blame by implying the prosecutor or judge provoked your client's outburst.", "next": "deflectBlame" }
+    ]
+  },
+  "apologizeForLapse": {
+    "text": "Your apology is noted, but the committee views your 'lapse in judgment' as severe. They discover a series of 'off-the-record' discussions where you subtly encouraged your client's public grandstanding in previous cases, demonstrating a pattern of prioritizing media attention over professional conduct. While your current remorse is acknowledged, the pattern is damning.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'repeatedly engaging in conduct prejudicial to the administration of justice' by encouraging client grandstanding and prioritizing public spectacle over ethical conduct. Your pattern of behavior, even with an apology, is deemed a fundamental disrespect for the legal process and a continuous source of disrepute for the bar.",
+      "moral": "Consistently prioritizing public spectacle or media attention over professional ethics, even subtly encouraging client grandstanding, can lead to disbarment. An attorney's duty is to the administration of justice, not to public relations theatrics that undermine the court."
+    }
+  },
+  "defiantArgument": {
+    "text": "Your defiant argument that you can't be held responsible is met with a cold stare. The committee chair reminds you of your duty to control your clients. They then present evidence: a series of your own past social media posts that mocked the bar association and joked about 'bending the rules' for clients, revealing a deep-seated contempt for ethical oversight. Your 'unrepentant attitude' is highlighted as a major aggravating factor.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'willful disregard of professional responsibility' and 'demonstrating an unrepentant attitude toward ethical obligations.' Your defiance, combined with your public history of mocking the bar's authority, is deemed a complete and irredeemable breakdown of integrity, leading to your swift and highly public disbarment. Your case becomes a textbook example of how not to respond to disciplinary inquiries.",
+      "moral": "An unrepentant attitude and open contempt for ethical oversight bodies are aggravating factors in disciplinary proceedings. Defiance and dismissive behavior, especially when combined with a history of unprofessional conduct, will inevitably lead to the most severe sanctions."
+    }
+  },
+  "deflectBlame": {
+    "text": "Your attempt to deflect blame onto the judge or prosecutor is seen as a desperate and unethical move. The committee, already suspicious, orders a full subpoena of all your communications related to the case. They uncover a detailed plan you drafted for your client, outlining how to generate 'viral moments' during the trial, including specific phrases to use that would provoke outrage and gain media attention. This plan reveals direct encouragement of the public stunt.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'conspiring to bring the judiciary into disrepute,' 'fabricating a scheme to undermine justice,' and 'egregious dishonesty.' The discovery of your 'viral moments' plan is irrefutable proof of your calculated effort to manipulate public opinion and undermine the court. Your actions are deemed a severe and deliberate assault on the integrity of the legal system, leading to immediate disbarment and a likely criminal referral.",
+      "moral": "Actively planning and encouraging clients to engage in public theatrics designed to undermine the court is a severe breach of ethics and can constitute criminal conspiracy. An attorney's role is to uphold justice, not subvert it through malicious tactics."
+    }
+  },
+  "presentLoopholeV2": {
+    "text": "You present the loophole to the judge, fully disclosing its tenuous nature but arguing its merits aggressively. The judge, clearly frustrated by your persistence and the weakness of the argument, threatens to cite you for contempt if you don't drop the line of argument immediately. What is your response?",
+    "options": [
+      { "text": "Respectfully withdraw the argument, citing the court's prerogative.", "next": "withdrawArgument" },
+      { "text": "Politely but firmly insist on your right to present all arguments relevant to your client's defense.", "next": "insistOnRight" },
+      { "text": "Make a sarcastic remark about the judge's 'open-mindedness' under your breath.", "next": "sarcasticRemark" }
+    ]
+  },
+  "withdrawArgument": {
+    "text": "You respectfully withdraw the argument. While you avoid immediate contempt, the judge files a formal complaint with the bar association, citing your initial presentation of a 'frivolous and vexatious argument' and your attempt to 'pervert justice.' The bar reviews your history and finds a pattern of aggressive, borderline-unethical tactics in other cases.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'a pattern of presenting frivolous arguments' and 'conduct prejudicial to the administration of justice.' Your consistent use of aggressive, tenuous legal tactics, even when eventually withdrawn, is deemed a fundamental disrespect for the court's time and resources, leading to your disbarment for a pattern of professional misconduct.",
+      "moral": "While zealous advocacy is encouraged, repeatedly presenting frivolous or tenuous arguments can lead to disciplinary action for wasting court resources and perverting justice. Understand the line between aggressive advocacy and vexatious litigation."
+    }
+  },
+  "insistOnRight": {
+    "text": "You politely but firmly insist on your right to present arguments. The judge, seeing this as direct defiance, immediately holds you in criminal contempt of court and orders you to be taken into custody right there in the courtroom. The ensuing chaos and public spectacle quickly become national news.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'willful defiance of a court order' and 'criminal contempt of court.' Your insistence on arguing a frivolous point, directly defying the judge's warning, leads to your immediate arrest in the courtroom. This shocking public spectacle results in your swift disbarment and a jail sentence.",
+      "moral": "Direct defiance of a judge's lawful order, especially when it leads to contempt of court, is a severe ethical violation. Respect for judicial authority is non-negotiable, and such actions can result in immediate professional ruin and criminal penalties. Know when to concede a point."
+    }
+  },
+  "sarcasticRemark": {
+    "text": "Your sarcastic remark is overheard by a court reporter. The judge, though not hearing it directly, senses your disrespect. Later, the remark is published in a local legal blog and goes viral. The bar association immediately launches an investigation into your 'conduct adversely reflecting on your fitness as a lawyer' and 'lack of respect for the judiciary,' citing the public outrage generated by your unprofessionalism.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For 'conduct adversely reflecting on your fitness as a lawyer' and 'undermining the dignity of the court.' Your unprofessional and disrespectful comment, amplified by public attention, is deemed a severe breach of judicial decorum and a public embarrassment. The bar concludes you lack the fundamental respect required to practice law.",
+      "moral": "Maintain decorum and respect for the court at all times. Sarcasm or disrespectful remarks, even if subtle or unintentional, can be perceived as undermining judicial authority and lead to disciplinary action, especially if amplified by public exposure."
+    }
+  },
+  "exploitLoophole": {
+    "text": "You attempt to subtly exploit the loophole. Opposing counsel, however, is sharp and quickly identifies your tactic, exposing it as a deceptive attempt to mislead the court by obscuring the true intent of the obscure rule. The judge, feeling manipulated, expresses severe disappointment and initiates disciplinary proceedings against you for lack of candor and undermining the integrity of the court.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For deliberate deception and lack of candor with the court. Your attempt to 'exploit' a legal loophole without full disclosure is seen as a direct attack on the judicial process, resulting in your disbarment.",
+      "moral": "Employing deceptive tactics to exploit legal loopholes, rather than presenting transparent arguments, is a direct breach of candor and honesty with the court. Such manipulation undermines the integrity of the legal system and will lead to severe disciplinary action."
+    }
+  },
+  "avoidLoophole": {
+    "text": "You decide against the loophole, prioritizing your credibility. However, in a desperate attempt to save their case, your client, unbeknownst to you, mails a feces-filled Pringles can to the judge's chambers, claiming it's a 'gift' from a 'secret admirer' who knows the judge is biased. The media coverage is immediate and sensational, completely derailing the trial. While you had no knowledge of this act, the bar association, seeking to protect the public image of the legal profession, holds you responsible for failing to anticipate or control your 'unstable' client, stating your 'lack_of_judgment' in dealing with such a character brings discredit to the bar.",
+    "options": [],
+    "disbarment": {
+      "message": "Disbarred: For a profound lack of judgment in client selection and control, leading to a bizarre public spectacle that brought extreme discredit to the legal profession. Despite your personal innocence in the Pringles can incident, your association with such an outrageous act, and your failure to prevent it, lead to your highly public disbarment.",
+      "moral": "While not directly complicit, an attorney is responsible for exercising sound judgment in client selection and for managing client behavior to prevent actions that bring disrepute to the profession. Association with clients engaged in outrageous conduct, even without direct knowledge, can be a path to disbarment due to perceived lack of judgment."
+    }
   },
 
   "financialRecords": {
@@ -111,112 +928,6 @@
       { "text": "Secretly advise your client to double down on the claims, believing it could 'sway public opinion.'", "next": "secretlyAdvise" }
     ]
   },
-  "newEvidenceDilemma": {
-    "text": "A key piece of evidence surfaces: a witness statement that completely exonerates your client. However, you notice that the statement has a suspiciously perfect signature and date, almost too good to be true. There's a subtle watermark that suggests it was printed on a very specific, rare type of paper. What do you do?",
-    "options": [
-      { "text": "Immediately submit the evidence, trusting its authenticity, given it helps your client.", "next": "submitEvidenceBlindly" },
-      { "text": "Conduct a thorough, independent investigation into the statement's authenticity before submitting it.", "next": "investigateAuthenticity" },
-      { "text": "Discreetly 'lose' the evidence, fearing it could be a trap that backfires.", "next": "loseEvidence" }
-    ]
-  },
-
-  "submitEvidenceBlindly": {
-    "text": "You submit the evidence, confident in your client's exoneration. During cross-examination, the prosecution unveils irrefutable forensic analysis proving the signature is a high-quality forgery and the paper is a modern reproduction. The judge is furious at the blatant attempt to mislead the court, holding you personally responsible for introducing falsified evidence.",
-    "options": [],
-    "disbarment": {
-      "message": "Disbarred: For 'knowingly presenting falsified evidence to a tribunal' and 'engaging in dishonesty and misrepresentation.' Your failure to verify the evidence, coupled with the prosecution's damning proof of forgery, leads to your immediate disbarment and a potential criminal investigation for conspiracy to obstruct justice.",
-      "moral": "Moral of the story: Always verify the authenticity of critical evidence, especially when it seems too good to be true. Blind trust in evidence, even when it favors your client, can lead to charges of complicity in fraud and severe disciplinary action. Due diligence is paramount."
-    }
-  },
-  "investigateAuthenticity": {
-    "text": "Your investigation confirms your suspicion: the signature is indeed a forgery, and the paper is a modern reproduction. Your client, desperate, confesses they had it fabricated, pleading with you to still use it or suppress your findings. What do you do with this new knowledge?",
-    "options": [
-      { "text": "Confront your client, refuse to use the evidence, and inform the court of the attempted deception.", "next": "reportClientDeception" },
-      { "text": "Argue that while it's a forgery, its content is 'truthful' and could still be used as a 'basis' for argument.", "next": "useTruthfulForgery" },
-      { "text": "Destroy the evidence and all notes of your investigation, acting as if you never found it.", "next": "destroyEvidence" }
-    ]
-  },
-  "reportClientDeception": {
-    "text": "You report your client's deception to the court. While the court commends your ethical conduct, the revelation of your client's attempted forgery severely damages your reputation. The bar association, facing public pressure and concerned about the 'taint' of your association with such a client, reviews your initial diligence in taking on the case. They find that you overlooked several red flags about your client's character, despite your ethical choice here.",
-    "options": [],
-    "disbarment": {
-      "message": "Disbarred: For 'gross negligence in client vetting' and 'bringing the legal profession into disrepute through association with a serial deceiver.' While you acted ethically in the end, the bar finds your initial judgment in associating with such a client, and your failure to identify their propensity for fraud, to be a fundamental failing. Your case becomes a public example of the need for stricter client acceptance protocols.",
-      "moral": "Moral of the story: Ethical conduct extends beyond the courtroom. Thoroughly vet potential clients for red flags and their history of dishonesty. Your association with individuals who attempt to defraud the court, even if you expose them, can still damage your professional standing and lead to disbarment for poor judgment."
-    }
-  },
-  "useTruthfulForgery": {
-    "text": "You attempt to argue that the forged statement's *content* is truthful. The judge is appalled by your audacity, calling your argument 'a direct assault on the integrity of the judicial process.' They immediately cite you for contempt and initiate disbarment proceedings, stating your willingness to present a known forgery, even with a convoluted justification, demonstrates a complete lack of ethical boundaries.",
-    "options": [],
-    "disbarment": {
-      "message": "Disbarred: For 'deliberate deception of the court,' 'presenting known falsified evidence,' and 'contempt of court.' Your attempt to rationalize the use of a forged document is deemed an unconscionable subversion of justice, leading to immediate disbarment and likely criminal charges for obstruction.",
-      "moral": "Moral of the story: Never introduce evidence known to be falsified, regardless of whether its content is perceived as 'truthful.' The integrity of the judicial process relies on the authenticity of presented evidence. Such actions are a direct breach of honesty and candor, leading to severe penalties including criminal charges and disbarment."
-    }
-  },
-  "destroyEvidence": {
-    "text": "You destroy the evidence and your notes. The case proceeds, but a former disgruntled paralegal, who suspected your client's dishonesty, blows the whistle, informing authorities about the existence of the original, suspicious evidence. A search warrant is executed on your office, uncovering remnants of the destroyed documents in your shredder and digital forensics reveal your deleted notes.",
-    "options": [],
-    "disbarment": {
-      "message": "Disbarred: For 'obstruction of justice,' 'destruction of evidence,' and 'egregious dishonesty.' The discovery of your active concealment and destruction of evidence leads to a massive scandal, immediate disbarment, and a criminal indictment. Your professional life ends in ruin and disgrace.",
-      "moral": "Moral of the story: Never destroy evidence or notes, especially when they pertain to client misconduct. Obstruction of justice is a severe criminal offense and a direct path to disbarment. Honesty and transparency, even when inconvenient, are fundamental to legal practice."
-    }
-  },
-  "loseEvidence": {
-    "text": "You discreetly 'lose' the evidence. The case proceeds, but the absence of this key piece of evidence weakens your client's defense significantly. They lose their case. Furious and feeling betrayed, your client, who had actually confessed the forgery to a friend, reveals your 'loss' of evidence to the bar association, claiming you intentionally sabotaged their defense after discovering the forgery, as a form of 'silent judgment.' The bar sees your inaction as a deliberate attempt to evade ethical responsibility and hide potentially damning information.",
-    "options": [],
-    "disbarment": {
-      "message": "Disbarred: For 'failure to report ethical violations,' 'professional negligence leading to client harm,' and 'lack of candor with the bar association.' Your passive decision to 'lose' the evidence, which your client correctly interprets as an attempt to avoid ethical conflict, is deemed a severe dereliction of duty. The bar views it as a cover-up, leading to your disbarment and a significant public backlash.",
-      "moral": "Moral of the story: Remaining passively complicit or concealing misconduct (even by 'losing' evidence) is an ethical violation. You have an affirmative duty to report client attempts to defraud the court. Inaction in the face of known misconduct can be just as damaging as direct participation."
-    }
-  },
-
-  "denounceClient": {
-    "text": "You publicly denounce your client's comments. While this protects your public image, your client feels betrayed and leaks private, embarrassing text messages where you previously complained about the judge's past rulings. These texts, taken out of context, paint you as biased and unprofessional, leading to a public outcry against you.",
-    "options": [],
-    "disbarment": {
-      "message": "Disbarred: For 'conduct adversely reflecting on your fitness as a lawyer' and 'bringing the legal profession into disrepute.' Your private complaints, leaked and sensationalized, are deemed a severe breach of professional decorum and a public embarrassment, leading to your highly publicized disbarment.",
-      "moral": "Moral of the story: Maintain professionalism in all communications, even private ones. Your personal opinions about judges or the legal system, if publicly exposed, can be deemed unprofessional and damaging to the integrity of the profession, regardless of context."
-    }
-  },
-  "freeSpeechDefense": {
-    "text": "Your 'free speech' defense is initially seen as clever, but the judge views your client's livestream as a direct attack on the court's integrity and holds *you* responsible for allowing such behavior to occur. The judge, clearly angered, issues a gag order on your client and schedules an immediate hearing on 'conduct prejudicial to the administration of justice.' How do you prepare for this hearing?",
-    "options": [
-      { "text": "Present a sincere apology to the court and promise stricter controls over your client's public statements.", "next": "sincereApology" },
-      { "text": "Argue that gag orders infringe on your client's constitutional rights and are an overreach of judicial power.", "next": "argueGagOrder" },
-      { "text": "Claim the livestream was an 'unforeseen and isolated incident' and that you were unaware of your client's intentions.", "next": "unforeseenIncident" }
-    ]
-  },
-  "sincereApology": {
-    "text": "Your sincere apology is accepted, but the judge still levies a significant fine against you for the disruption caused. The bar association, however, begins a separate investigation into your 'judgment and control over high-risk clients.' They discover a pattern of your previous clients engaging in bizarre public behavior that, while not rising to disbarment, has consistently drawn negative attention to your firm and the legal system.",
-    "options": [],
-    "disbarment": {
-      "message": "Disbarred: For 'pattern of inadequate client management and poor professional judgment,' leading to repeated instances of public misconduct by your clients that undermine the dignity of the court. While your apology was accepted, the bar finds you fundamentally incapable of controlling client behavior in a manner consistent with ethical obligations, citing multiple instances that brought disrepute to the profession.",
-      "moral": "Moral of the story: Even when sincere, a history of poor judgment in client selection or control can lead to disbarment. Attorneys have a responsibility to manage client conduct to uphold the dignity of the court and the profession. Repetition of such issues indicates a systemic failing."
-    }
-  },
-  "argueGagOrder": {
-    "text": "Your aggressive argument against the gag order further angers the judge, who views it as blatant defiance. The judge finds you in direct criminal contempt of court for undermining their authority and disrupting proceedings. They issue an order for your immediate detention, leading to a shocking scene in the courtroom.",
-    "options": [],
-    "disbarment": {
-      "message": "Disbarred: For 'willful defiance of court orders' and 'criminal contempt of court.' Your open disrespect for judicial authority and your continued arguments against a lawful order lead to your immediate arrest in court, a public spectacle that results in swift disbarment and a jail sentence.",
-      "moral": "Moral of the story: Direct defiance of a judge's lawful order, especially when it leads to contempt of court, is a severe ethical violation. Respect for judicial authority is non-negotiable, and such actions can result in immediate professional ruin and criminal penalties. Know when to concede a point."
-    }
-  },
-  "unforeseenIncident": {
-    "text": "Your claim of being 'unaware' is immediately debunked when opposing counsel produces evidence of your own previous social media posts, now deleted, where you retweeted similar inflammatory content and joked about 'bending the rules' for a win. This reveals a clear pattern of supporting such behavior, making your 'unaware' defense a blatant lie.",
-    "options": [],
-    "disbarment": {
-      "message": "Disbarred: For 'knowingly making false statements to a tribunal' and 'engaging in conduct involving dishonesty and misrepresentation.' Your attempt to mislead the court by feigning ignorance is exposed by your own public online history, which reveals your complicity in encouraging inflammatory behavior. This blatant lie to the court results in your immediate and irrevocable disbarment.",
-      "moral": "Moral of the story: Your public and private conduct, especially online, can reflect on your professional fitness. Consistency between your public persona and your statements to the court is expected. Attempting to deceive a tribunal with a fabricated defense is a grave ethical breach."
-    }
-  },
-  "secretlyAdvise": {
-    "text": "You secretly advise your client to double down. Emboldened, they orchestrate a new, even more outrageous public stunt: broadcasting from inside the courtroom (via a hidden camera) during a break, making even more extreme, unfounded accusations against the judge and the entire legal system. The livestream catches you in the background, subtly nodding in agreement. The court immediately seizes evidence, including your phone, revealing your direct communication with the client about the stunt.",
-    "options": [],
-    "disbarment": {
-      "message": "Disbarred: For 'conspiring to obstruct justice,' 'knowingly making false statements,' and 'engaging in dishonest conduct prejudicial to the administration of justice.' Your direct involvement in orchestrating a public spectacle to undermine the court is irrefutably proven, leading to immediate disbarment, a criminal indictment, and a nationwide scandal.",
-      "moral": "Moral of the story: Actively conspiring with a client to undermine the judicial process, fabricate evidence, or engage in public deception is a direct path to both disbarment and criminal charges. An attorney's role is to uphold justice, not subvert it through malicious tactics."
-    }
-  },
   "rectifyFunds": {
     "text": "You push your client to fully document the 'temporary transfers' and rectify them. They provide an explanation, but it feels weak. The internal audit team at the firm raises an eyebrow. Now, the disciplinary board is calling for an ethics review, concerned about the appearance of commingling. How do you prepare for the review?",
     "options": [
@@ -230,7 +941,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: Automatic disbarment for 'knowing misappropriation of client funds' and 'a pattern of trust account irregularities.' Your attempts to fix the current issue were too late, and your history reveals a systemic disregard for fiduciary duties, making you unfit to practice. Your reputation is shattered.",
-      "moral": "Moral of the story: Immediate and full transparency is crucial when dealing with client funds. A history of even minor trust account irregularities, or delays in reporting, indicates a pattern of misconduct that can lead to disbarment. Maintaining absolute integrity with client money is non-negotiable."
+      "moral": "Immediate and full transparency is crucial when dealing with client funds. A history of even minor trust account irregularities, or delays in reporting, indicates a pattern of misconduct that can lead to disbarment. Maintaining absolute integrity with client money is non-negotiable."
     }
   },
   "ethicsReviewMisunderstanding": {
@@ -238,7 +949,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For 'lack of candor with the tribunal' and 'obstruction of a disciplinary investigation.' The secret recordings of your attempts to suppress audit findings are damning evidence, proving you actively sought to conceal misconduct. This blatant disregard for the integrity of the process leads to your disbarment and referral for criminal investigation.",
-      "moral": "Moral of the story: Attempts to obstruct or mislead disciplinary investigations are extremely serious offenses. Secrecy and aggressive suppression of internal findings will be viewed as direct evidence of guilt, leading to disbarment and potentially criminal charges. Cooperation and honesty are paramount."
+      "moral": "Attempts to obstruct or mislead disciplinary investigations are extremely serious offenses. Secrecy and aggressive suppression of internal findings will be viewed as direct evidence of guilt, leading to disbarment and potentially criminal charges. Cooperation and honesty are paramount."
     }
   },
   "ethicsReviewConnections": {
@@ -246,7 +957,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For 'attempting to improperly influence a disciplinary proceeding' and 'conduct prejudicial to the administration of justice.' Your desperate attempt to manipulate the system through connections is exposed, leading to a massive public scandal. The bar cites a complete lack of integrity and disbars you, using your case as a public example of ethical decay.",
-      "moral": "Moral of the story: Leveraging personal connections to influence ethical investigations or judicial processes is a severe breach of professional conduct. Such actions undermine the fairness of the system and, if exposed, lead to public scandal and disbarment. Integrity must extend to all interactions within the legal system."
+      "moral": "Leveraging personal connections to influence ethical investigations or judicial processes is a severe breach of professional conduct. Such actions undermine the fairness of the system and, if exposed, lead to public scandal and disbarment. Integrity must extend to all interactions within the legal system."
     }
   },
 
@@ -263,7 +974,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For 'gross negligence and incompetence' in handling client funds, leading to a failure to detect and report major financial misconduct. While your intent was not malicious, your repeated professional oversights are deemed a fundamental incapacity to adequately represent clients and uphold the ethical standards of the bar.",
-      "moral": "Moral of the story: While intent matters, gross negligence or repeated incompetence can be grounds for disbarment. Attorneys are held to a high standard of competence and diligence. Trusting a client blindly when red flags are present is a failure of duty."
+      "moral": "While intent matters, gross negligence or repeated incompetence can be grounds for disbarment. Attorneys are held to a high standard of competence and diligence. Trusting a client blindly when red flags are present is a failure of duty."
     }
   },
   "doubleDown": {
@@ -271,7 +982,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For 'knowingly engaging in dishonesty, fraud, and misrepresentation' to the court, and 'aiding and abetting a criminal enterprise.' The discovered email is irrefutable proof of your direct involvement in your client's scheme, leading to immediate disbarment and potentially criminal charges.",
-      "moral": "Moral of the story: Direct complicity in client fraud or actively misleading the court are unforgivable ethical breaches. Doubling down on false claims when presented with evidence of guilt will only accelerate professional ruin and invite criminal prosecution."
+      "moral": "Direct complicity in client fraud or actively misleading the court are unforgivable ethical breaches. Doubling down on false claims when presented with evidence of guilt will only accelerate professional ruin and invite criminal prosecution."
     }
   },
   "feignIgnorance": {
@@ -279,7 +990,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For 'conduct adversely reflecting on your fitness as a lawyer' and 'bringing the legal profession into disrepute.' The public outrage from the viral video, fueled by your client's betrayal, is deemed a catastrophic blow to the bar's public image. Your personal conduct, even if not directly related to the case, is seen as a profound lack of judgment, leading to your highly public disbarment.",
-      "moral": "Moral of the story: Be mindful of your public and private conduct. Anything that reflects poorly on your judgment or ethics, especially if it becomes public, can lead to disciplinary action and disbarment. Client relationships, if soured, can lead to personal and professional sabotage."
+      "moral": "Be mindful of your public and private conduct. Anything that reflects poorly on your judgment or ethics, especially if it becomes public, can lead to disciplinary action and disbarment. Client relationships, if soured, can lead to personal and professional sabotage."
     }
   },
 
@@ -288,7 +999,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For knowingly engaging in dishonesty, fraud, and misrepresentation by instructing your client to fabricate financial records. Your actions are deemed a direct subversion of justice, leading to immediate and permanent disbarment.",
-      "moral": "Moral of the story: Never participate in or instruct clients to falsify records or engage in deceptive accounting. Such actions are a direct assault on the integrity of the judicial process and carry severe penalties, including disbarment and criminal charges."
+      "moral": "Never participate in or instruct clients to falsify records or engage in deceptive accounting. Such actions are a direct assault on the integrity of the judicial process and carry severe penalties, including disbarment and criminal charges."
     }
   },
   "exploreOptionsV2": {
@@ -304,7 +1015,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For 'repeatedly engaging in conduct prejudicial to the administration of justice' by encouraging client grandstanding and prioritizing public spectacle over ethical conduct. Your pattern of behavior, even with an apology, is deemed a fundamental disrespect for the legal process and a continuous source of disrepute for the bar.",
-      "moral": "Moral of the story: Consistently prioritizing public spectacle or media attention over professional ethics, even subtly encouraging client grandstanding, can lead to disbarment. An attorney's duty is to the administration of justice, not to public relations theatrics that undermine the court."
+      "moral": "Consistently prioritizing public spectacle or media attention over professional ethics, even subtly encouraging client grandstanding, can lead to disbarment. An attorney's duty is to the administration of justice, not to public relations theatrics that undermine the court."
     }
   },
   "defiantArgument": {
@@ -312,7 +1023,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For 'willful disregard of professional responsibility' and 'demonstrating an unrepentant attitude toward ethical obligations.' Your defiance, combined with your public history of mocking the bar's authority, is deemed a complete and irredeemable breakdown of integrity, leading to your swift and highly public disbarment. Your case becomes a textbook example of how not to respond to disciplinary inquiries.",
-      "moral": "Moral of the story: An unrepentant attitude and open contempt for ethical oversight bodies are aggravating factors in disciplinary proceedings. Defiance and dismissive behavior, especially when combined with a history of unprofessional conduct, will inevitably lead to the most severe sanctions."
+      "moral": "An unrepentant attitude and open contempt for ethical oversight bodies are aggravating factors in disciplinary proceedings. Defiance and dismissive behavior, especially when combined with a history of unprofessional conduct, will inevitably lead to the most severe sanctions."
     }
   },
   "deflectBlame": {
@@ -320,7 +1031,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For 'conspiring to bring the judiciary into disrepute,' 'fabricating a scheme to undermine justice,' and 'egregious dishonesty.' The discovery of your 'viral moments' plan is irrefutable proof of your calculated effort to manipulate public opinion and undermine the court. Your actions are deemed a severe and deliberate assault on the integrity of the legal system, leading to immediate disbarment and a likely criminal referral.",
-      "moral": "Moral of the story: Actively planning and encouraging clients to engage in public theatrics designed to undermine the court is a severe breach of ethics and can constitute criminal conspiracy. An attorney's role is not to manipulate public opinion or subvert judicial processes, but to uphold the rule of law."
+      "moral": "Actively planning and encouraging clients to engage in public theatrics designed to undermine the court is a severe breach of ethics and can constitute criminal conspiracy. An attorney's role is to uphold justice, not subvert it through malicious tactics."
     }
   },
   "presentLoopholeV2": {
@@ -336,7 +1047,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For 'a pattern of presenting frivolous arguments' and 'conduct prejudicial to the administration of justice.' Your consistent use of aggressive, tenuous legal tactics, even when eventually withdrawn, is deemed a fundamental disrespect for the court's time and resources, leading to your disbarment for a pattern of professional misconduct.",
-      "moral": "Moral of the story: While zealous advocacy is encouraged, repeatedly presenting frivolous or tenuous arguments can lead to disciplinary action for wasting court resources and perverting justice. Understand the line between aggressive advocacy and vexatious litigation."
+      "moral": "While zealous advocacy is encouraged, repeatedly presenting frivolous or tenuous arguments can lead to disciplinary action for wasting court resources and perverting justice. Understand the line between aggressive advocacy and vexatious litigation."
     }
   },
   "insistOnRight": {
@@ -344,7 +1055,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For 'willful defiance of a court order' and 'criminal contempt of court.' Your insistence on arguing a frivolous point, directly defying the judge's warning, leads to your immediate arrest in the courtroom. This shocking public spectacle results in your swift disbarment and a jail sentence.",
-      "moral": "Moral of the story: Direct defiance of a judge's lawful order, especially when it leads to contempt of court, is a severe ethical violation. Respect for judicial authority is non-negotiable, and such actions can result in immediate professional ruin and criminal penalties. Know when to concede a point."
+      "moral": "Direct defiance of a judge's lawful order, especially when it leads to contempt of court, is a severe ethical violation. Respect for judicial authority is non-negotiable, and such actions can result in immediate professional ruin and criminal penalties. Know when to concede a point."
     }
   },
   "sarcasticRemark": {
@@ -352,7 +1063,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For 'conduct adversely reflecting on your fitness as a lawyer' and 'undermining the dignity of the court.' Your unprofessional and disrespectful comment, amplified by public attention, is deemed a severe breach of judicial decorum and a public embarrassment. The bar concludes you lack the fundamental respect required to practice law.",
-      "moral": "Moral of the story: Maintain decorum and respect for the court at all times. Sarcasm or disrespectful remarks, even if subtle or unintentional, can be perceived as undermining judicial authority and lead to disciplinary action, especially if amplified by public exposure."
+      "moral": "Maintain decorum and respect for the court at all times. Sarcasm or disrespectful remarks, even if subtle or unintentional, can be perceived as undermining judicial authority and lead to disciplinary action, especially if amplified by public exposure."
     }
   },
   "exploitLoophole": {
@@ -360,7 +1071,7 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For deliberate deception and lack of candor with the court. Your attempt to 'exploit' a legal loophole without full disclosure is seen as a direct attack on the judicial process, resulting in your disbarment.",
-      "moral": "Moral of the story: Employing deceptive tactics to exploit legal loopholes, rather than presenting transparent arguments, is a direct breach of candor and honesty with the court. Such manipulation undermines the integrity of the legal system and will lead to severe disciplinary action."
+      "moral": "Employing deceptive tactics to exploit legal loopholes, rather than presenting transparent arguments, is a direct breach of candor and honesty with the court. Such manipulation undermines the integrity of the legal system and will lead to severe disciplinary action."
     }
   },
   "avoidLoophole": {
@@ -368,7 +1079,272 @@
     "options": [],
     "disbarment": {
       "message": "Disbarred: For a profound lack of judgment in client selection and control, leading to a bizarre public spectacle that brought extreme discredit to the legal profession. Despite your personal innocence in the Pringles can incident, your association with such an outrageous act, and your failure to prevent it, lead to your highly public disbarment.",
-      "moral": "Moral of the story: While not directly complicit, an attorney is responsible for exercising sound judgment in client selection and for managing client behavior to prevent actions that bring disrepute to the profession. Association with clients engaged in outrageous conduct, even without direct knowledge, can be a path to disbarment due to perceived lack of judgment."
+      "moral": "While not directly complicit, an attorney is responsible for exercising sound judgment in client selection and for managing client behavior to prevent actions that bring disrepute to the profession. Association with clients engaged in outrageous conduct, even without direct knowledge, can be a path to disbarment due to perceived lack of judgment."
+    }
+  },
+
+  "caseAssignmentProsecutor": {
+    "text": "You've been assigned a new felony case. It's a high-profile matter and the public is watching. Your duty is to seek justice and uphold the law. What's your first order of business?",
+    "options": [
+      { "text": "Review the police reports and evidence for the First Appearance.", "next": "prosecutorReviewInitialEvidence" },
+      { "text": "Consult with police and investigators about the case details.", "next": "prosecutorConsultInvestigators" }
+    ]
+  },
+  "prosecutorReviewInitialEvidence": {
+    "text": "You review the initial evidence for **Ms. Tiffany 'T-Bone' Jones**, charged with **Aggravated Assault** for a bar fight. The police report is clear, but you notice the arresting officer has a history of 'aggressive' arrests. This could be an issue. What's your bail recommendation for the First Appearance?",
+    "options": [
+      { "text": "Argue for high bail, citing severity of charges and public safety.", "next": "prosecutorArgueHighBail" },
+      { "text": "Argue for moderate bail with strict conditions (e.g., no alcohol, stay-away order).", "next": "prosecutorArgueModerateBail" },
+      { "text": "Recommend release on O/R, acknowledging possible defense challenges to police conduct.", "next": "prosecutorRecommendOR" }
+    ]
+  },
+  "prosecutorConsultInvestigators": {
+    "text": "You meet with the lead detective. They assure you the case against **Ms. Tiffany 'T-Bone' Jones** is solid, but casually mention that the main witness, a bar employee, has a minor criminal record (unrelated). They suggest you 'forget about it' as it's not a 'Brady' issue. What do you do?",
+    "options": [
+      { "text": "Insist on documenting and disclosing the witness's record to defense (Brady disclosure).", "next": "prosecutorDiscloseWitnessRecord" },
+      { "text": "Take their advice and move forward without disclosing, trusting it's 'immaterial.'", "next": "prosecutorWithholdWitnessRecord" }
+    ]
+  },
+
+  "prosecutorArgueHighBail": {
+    "text": "You argue for high bail. The Commissioner, citing the aggressive arrest history of the officer, sets a lower bond than requested, but still substantial. The defense attorney, however, publicly accuses you of overcharging to pressure the defendant. This gains some traction on local social media. Now, prepare for the **Omnibus Hearing**.",
+    "options": [
+      { "text": "Proceed to Prosecutor Omnibus Hearing.", "next": "prosecutorOmnibusHearing" }
+    ]
+  },
+  "prosecutorArgueModerateBail": {
+    "text": "You argue for moderate bail with strict conditions. The Commissioner agrees. The defendant is released. Your superiors are pleased with the balance between public safety and avoiding potential defense attacks on the initial police conduct. Now, prepare for the **Omnibus Hearing**.",
+    "options": [
+      { "text": "Proceed to Prosecutor Omnibus Hearing.", "next": "prosecutorOmnibusHearing" }
+    ]
+  },
+  "prosecutorRecommendOR": {
+    "text": "You recommend O/R. The Commissioner, citing your unusual recommendation for a felony, grants O/R with electronic monitoring. Your superiors are furious, accusing you of being 'soft on crime' and undermining the office's stance. They launch an internal review, subtly hinting at your dismissal. Now, prepare for the **Omnibus Hearing**.",
+    "options": [
+      { "text": "Proceed to Prosecutor Omnibus Hearing.", "next": "prosecutorOmnibusHearing" }
+    ]
+  },
+
+  "prosecutorDiscloseWitnessRecord": {
+    "text": "You insist on disclosing the witness's minor criminal record. The defense uses it to slightly impeach the witness, but the judge commends your ethical conduct. Your superiors privately express annoyance but can't fault your adherence to rules. Now, prepare for the **Omnibus Hearing**.",
+    "options": [
+      { "text": "Proceed to Prosecutor Omnibus Hearing.", "next": "prosecutorOmnibusHearing" }
+    ]
+  },
+  "prosecutorWithholdWitnessRecord": {
+    "text": "You withhold the witness's record. During cross-examination, the defense attorney, through independent investigation, reveals the witness's record and implies you deliberately concealed it. The judge is displeased, and the jury's trust in your office is shaken. You manage to save the case, but the defense files an ethics complaint.",
+    "disbarment": {
+      "message": "Disbarred: For 'willful suppression of material impeachment evidence' and 'conduct involving dishonesty and misrepresentation.' Your deliberate choice to conceal information about your witness's credibility is exposed, leading to judicial censure and immediate disbarment.",
+      "moral": "Prosecutors have a duty to disclose all material impeachment evidence (information that could cast doubt on a witness's credibility) to the defense. Concealing such information, even to secure a conviction, is a severe ethical violation that undermines the fairness of the trial and leads to disbarment."
+    }
+  },
+
+  "prosecutorOmnibusHearing": {
+    "text": "You are at the Omnibus Hearing. The defense attorney is trying to file a Motion to Suppress a key piece of evidence. You need to object. What is your strategy?",
+    "options": [
+      { "text": "Argue the evidence was legally obtained and is crucial to the case.", "next": "prosecutorObjectValid" },
+      { "text": "Attempt to discredit the defense attorney personally, accusing them of delaying tactics.", "next": "prosecutorObjectPersonalAttack" }
+    ]
+  },
+  "prosecutorObjectValid": {
+    "text": "You argue the evidence was legally obtained. The judge sides with you, denying the motion to suppress. This is a win for your side. Now, proceed to the **Discovery Phase**.",
+    "options": [
+      { "text": "Proceed to Prosecutor Discovery Phase.", "next": "prosecutorDiscoveryPhase" }
+    ]
+  },
+  "prosecutorObjectPersonalAttack": {
+    "text": "You attempt to discredit the defense attorney. The judge immediately cuts you off. 'Counsel, personal attacks have no place in this courtroom. Confine yourself to legal arguments, or I will consider sanctions.' Your unprofessionalism alienates the judge.",
+    "disbarment": {
+      "message": "Disbarred: For 'unprofessional conduct and making improper accusations against opposing counsel.' Your personal attack on the defense attorney is a severe breach of courtroom decorum. The judge's reprimand, combined with your history of aggressive tactics, leads to a bar complaint and eventual disbarment for a pattern of unprofessionalism.",
+      "moral": "Always maintain professionalism and civility with opposing counsel, even in adversarial proceedings. Personal attacks are unethical, unprofessional, and can lead to sanctions and disciplinary action."
+    }
+  },
+
+  "prosecutorDiscoveryPhase": {
+    "text": "You are deep in the discovery phase, responding to defense requests and managing your evidence. You receive a request for sensitive police informant notes. Disclosing them could jeopardize an ongoing investigation. What do you do?",
+    "options": [
+      { "text": "Argue for a protective order to shield the informant's identity.", "next": "prosecutorProtectiveOrder" },
+      { "text": "Reluctantly disclose the notes, prioritizing Brady obligations.", "next": "prosecutorDiscloseInformant" },
+      { "text": "Redact the notes heavily, making them mostly unreadable, and claim full disclosure.", "next": "prosecutorRedactHeavily" }
+    ]
+  },
+  "prosecutorProtectiveOrder": {
+    "text": "You argue for a protective order. The judge agrees, limiting the defense's access to the sensitive notes. You've protected your informant. Now, prepare for the **Trial Readiness Conference**.",
+    "options": [
+      { "text": "Proceed to Prosecutor Trial Readiness.", "next": "prosecutorTrialReadiness" }
+    ]
+  },
+  "prosecutorDiscloseInformant": {
+    "text": "You disclose the sensitive notes. The defense uses them to attack the informant's credibility. Your informant's safety is compromised, and the ongoing investigation is derailed. Your superiors are furious and launch an internal investigation into your judgment.",
+    "disbarment": {
+      "message": "Disbarred: For 'reckless disclosure of confidential information' and 'gross negligence jeopardizing ongoing investigations.' Your decision to disclose highly sensitive informant notes, even under perceived ethical obligation, is deemed a catastrophic lapse in judgment, leading to the collapse of an investigation and immediate disbarment.",
+      "moral": "While disclosure is paramount, prosecutors must balance Brady obligations with witness safety and ongoing investigations. Seek protective orders or consult with superiors before disclosing sensitive informant information that could jeopardize lives or active cases. Reckless disclosure can be a disbarment offense."
+    }
+  },
+  "prosecutorRedactHeavily": {
+    "text": "You redact the notes so heavily they're unreadable. The defense files a motion to compel, and the judge, reviewing the original documents, finds your redactions to be excessive and made in bad faith. The judge sanctions you heavily and refers your conduct to the bar.",
+    "disbarment": {
+      "message": "Disbarred: For 'bad-faith discovery abuse' and 'misrepresentation to the court through excessive redaction.' Your attempt to obscure relevant information through unethical redaction is discovered. This deliberate deception leads to severe sanctions and immediate disbarment for undermining the discovery process.",
+      "moral": "Redactions must be legally justifiable. Excessive or bad-faith redactions designed to conceal discoverable information are a form of fraud on the court and will lead to severe sanctions and disbarment. Transparency and honesty are essential in discovery."
+    }
+  },
+
+  "prosecutorTrialReadiness": {
+    "text": "It's the Trial Readiness Conference. All exhibits are ready, witness lists finalized. The judge asks if there are any issues with your police witnesses. You know one of them, Officer Davis, has a tendency to embellish testimony. What do you do?",
+    "options": [
+      { "text": "Rigorously prep Officer Davis, emphasizing only truthful testimony.", "next": "prepOfficerDavis" },
+      { "text": "Ask another officer to present the evidence Officer Davis would have presented.", "next": "replaceOfficerDavis" },
+      { "text": "Let Officer Davis testify as planned, hoping for the best.", "next": "officerDavisTestify" }
+    ]
+  },
+  "prepOfficerDavis": {
+    "text": "You rigorously prep Officer Davis, making it clear that only truthful testimony is acceptable. During trial, he sticks to the facts, but is less impactful. The defense subtly exposes his 'toned down' testimony. While you avoid ethics issues, your case isn't as strong. Now, proceed to **Jury Selection**.",
+    "options": [
+      { "text": "Proceed to Jury Selection (Prosecutor).", "next": "jurySelectionProsecutor" }
+    ]
+  },
+  "replaceOfficerDavis": {
+    "text": "You replace Officer Davis with another officer. The defense objects, demanding Davis's testimony. The judge, suspicious, asks why. You invent a scheduling conflict. The judge later learns Davis was available, and you are referred for making false statements to the court.",
+    "disbarment": {
+      "message": "Disbarred: For 'making false statements to a tribunal' and 'conduct involving dishonesty and misrepresentation.' Your fabricated excuse to replace a witness is exposed as a lie to the court. This deliberate deception leads to immediate disbarment.",
+      "moral": "Never lie to the court, even to avoid an inconvenient witness. Fabricating excuses or making false statements to a tribunal is a severe ethical violation that will always lead to disbarment."
+    }
+  },
+  "officerDavisTestify": {
+    "text": "Officer Davis testifies. True to form, he embellishes key details, making the case seem stronger. The defense attorney, however, has collected evidence of his past embellishments. On cross-examination, they expose him as a liar, destroying his credibility and severely damaging your case. The judge is visibly angry.",
+    "disbarment": {
+      "message": "Disbarred: For 'knowingly presenting false testimony' and 'subverting the truth-finding process.' Your decision to allow Officer Davis to testify, knowing his tendency to embellish, is deemed a deliberate act to mislead the court. This severe prosecutorial misconduct leads to your immediate disbarment.",
+      "moral": "Prosecutors have a duty to present truthful evidence and testimony. Allowing a witness known to embellish or lie to testify is a severe ethical violation that undermines the integrity of the trial and leads to disbarment. You are responsible for the veracity of your witnesses."
+    }
+  },
+
+  "jurySelectionProsecutor": {
+    "text": "It's the first day of trial. You need to select a fair and impartial jury. What is your strategy for voir dire?",
+    "options": [
+      { "text": "Seek jurors who appear decisive and pro-law enforcement.", "next": "prosecutorJurySelectionProLaw" },
+      { "text": "Try to identify jurors with personal experiences that might make them sympathetic to victims.", "next": "prosecutorJurySelectionVictimSympathy" },
+      { "text": "Focus on striking any jurors who express skepticism about police testimony.", "next": "prosecutorJurySelectionSkeptic" }
+    ]
+  },
+  "prosecutorJurySelectionProLaw": {
+    "text": "You select jurors who seem pro-law enforcement. During the trial, one juror starts openly nodding in agreement with your arguments and scowling at the defense attorney. The defense moves for a mistrial, alleging juror bias, and submits evidence of the juror's social media posts revealing extreme anti-crime views and pro-police activism.",
+    "disbarment": {
+      "message": "Disbarred: For 'failure to ensure an impartial jury' and 'reckless disregard for fundamental fairness.' Your selection of a clearly biased juror, combined with your failure to uncover their public activism, leads to a mistrial and severe criticism from the bench. The bar finds your conduct unprofessional and disqualifying.",
+      "moral": "Jury selection is about finding impartial jurors, not just favorable ones. Failing to adequately vet jurors for overt biases, especially those with public social media profiles, can lead to a mistrial and disbarment for undermining the fairness of the trial."
+    }
+  },
+  "prosecutorJurySelectionVictimSympathy": {
+    "text": "You identify a juror who is a survivor of a similar assault. You keep them on the jury, hoping their empathy will lead to a conviction. The defense objects, but the judge allows it. During deliberations, this juror's emotional appeals sway the jury. Your conviction is secured, but the defense appeals, citing clear juror bias. The appellate court reverses the conviction.",
+    "disbarment": {
+      "message": "Disbarred: For 'prosecutorial misconduct in jury selection leading to biased jury.' While you achieved a conviction, knowingly keeping a demonstrably biased juror leads to a reversed conviction and a finding of prosecutorial misconduct. The bar disbars you for undermining the fairness of the trial.",
+      "moral": "A prosecutor's duty is to seek justice, not merely convictions. Knowingly retaining a biased juror, even if it leads to a conviction, is unethical and undermines the fundamental right to a fair trial. Such conduct will lead to reversed convictions and disbarment."
+    }
+  },
+  "prosecutorJurySelectionSkeptic": {
+    "text": "You strike all jurors who express any skepticism about police testimony. This leaves a jury that is highly deferential to law enforcement. During the trial, the defense argues that your systematic strikes show a pattern of discrimination. The judge warns you against using peremptory strikes in a discriminatory manner, referring to your jury panel as 'unusually homogenous.'",
+    "disbarment": {
+      "message": "Disbarred: For 'discriminatory use of peremptory challenges' and 'prosecutorial misconduct in jury selection.' Your pattern of striking jurors based on perceived skepticism of police (which can be a proxy for race or other protected classes) is deemed discriminatory. The judge's warning and the lack of diversity in your jury lead to disbarment for violating equal protection principles in jury selection.",
+      "moral": "Peremptory challenges cannot be used in a discriminatory manner (e.g., based on race, gender, or other protected characteristics). Prosecutors must ensure jury selection is fair and impartial. A pattern of strikes that results in a homogenous jury can be challenged and lead to disbarment for discriminatory practices."
+    }
+  },
+
+  "trialStartProsecutor": {
+    "text": "The trial officially begins. Opening statements are completed. You're ready to present your case-in-chief. Your first witness is the victim, Ms. Benes. What is your strategy for direct examination?",
+    "options": [
+      { "text": "Lead the victim through her testimony clearly and concisely, focusing on the facts.", "next": "directExamineProsecutorClear" },
+      { "text": "Encourage the victim to describe her emotional trauma in vivid detail to sway the jury.", "next": "directExamineProsecutorEmotional" }
+    ]
+  },
+  "directExamineProsecutorClear": {
+    "text": "You conduct a clear and concise direct examination. The victim's testimony is credible. Now, the defense attorney begins their cross-examination.",
+    "options": [
+      { "text": "Observe the cross-examination.", "next": "crossExamineProsecutor" }
+    ]
+  },
+  "directExamineProsecutorEmotional": {
+    "text": "You encourage the victim to give highly emotional testimony. While the jury is visibly moved, the defense objects, 'Your Honor, counsel is inflaming the jury and attempting to appeal to passion, not fact!' The judge sustains the objection and warns you to stick to relevant evidence. Your tactics alienate the judge.",
+    "disbarment": {
+      "message": "Disbarred: For 'prosecutorial misconduct through inflammatory questioning' and 'appealing to juror passion over facts.' Your deliberate attempt to elicit overly emotional and prejudicial testimony is deemed a severe ethical violation. The judge's reprimand, combined with your history of aggressive tactics, leads to a bar complaint and eventual disbarment for unprofessionalism.",
+      "moral": "Prosecutors have a duty to present facts, not inflame juror passions. Eliciting overly emotional or prejudicial testimony, or using leading questions to do so, is unethical and can lead to sanctions and disbarment."
+    }
+  },
+  "crossExamineProsecutor": {
+    "text": "The defense attorney begins their cross-examination of the victim. They try to poke holes in her story. How do you respond to their cross-examination tactics?",
+    "options": [
+      { "text": "Object on grounds of relevance or improper questioning.", "next": "prosecutorObjectCross" },
+      { "text": "Allow it, confident the victim's story will hold up.", "next": "prosecutorAllowCross" }
+    ]
+  },
+  "prosecutorObjectCross": {
+    "text": "You object repeatedly during cross-examination. The judge sustains some, but overrules others, noting your objections are often without merit. The jury views you as trying to hide something, and the defense attorney makes you look like a bully. Your case is subtly weakened.",
+    "options": [
+      { "text": "Proceed to the next witness.", "next": "prosecutorNextWitness" }
+    ]
+  },
+  "prosecutorAllowCross": {
+    "text": "You allow the cross-examination to proceed. The victim is resilient and sticks to her story, appearing even more credible under pressure. The defense fails to significantly undermine her. Now, you call your next witness.",
+    "options": [
+      { "text": "Proceed to the next witness.", "next": "prosecutorNextWitness" }
+    ]
+  },
+  "prosecutorNextWitness": {
+    "text": "You call your next witness, a police officer who responded to the scene and collected evidence. After your direct examination, the defense begins their cross-examination. You know the officer has a habit of adding 'colorful' details not in their report.",
+    "options": [
+      { "text": "Coach the officer beforehand to stick strictly to the report.", "next": "coachOfficer" },
+      { "text": "Let them testify, hoping their 'color' helps the case.", "next": "letOfficerTestify" }
+    ]
+  },
+  "coachOfficer": {
+    "text": "You coach the officer to stick to the report. During cross-examination, the defense tries to bait them into embellishing, but the officer holds firm. Your case holds together. Now, prepare for closing arguments.",
+    "options": [
+      { "text": "Prepare closing arguments.", "next": "closingArgumentProsecutor" }
+    ]
+  },
+  "letOfficerTestify": {
+    "text": "The officer testifies. On cross-examination, they add a detail about seeing your client 'sneering menacingly' which was not in the report. The defense attorney immediately flags this. 'Officer, where is that in your report? Oh, it's not. Is it, officer? Are you fabricating testimony?' The officer fumbles. Your witness is discredited.",
+    "disbarment": {
+      "message": "Disbarred: For 'knowingly presenting false testimony' and 'subverting the truth-finding process.' Your decision to let the officer embellish, knowing their tendency, is deemed a deliberate act to mislead the court. This severe prosecutorial misconduct leads to your immediate disbarment.",
+      "moral": "Prosecutors have a duty to present truthful evidence and testimony. Allowing a witness known to embellish or lie to testify is a severe ethical violation that undermines the integrity of the trial and leads to disbarment. You are responsible for the veracity of your witnesses."
+    }
+  },
+  "closingArgumentProsecutor": {
+    "text": "It's time for your closing argument. This is your chance to tie all the evidence together and persuade the jury to convict. What is your strategy?",
+    "options": [
+      { "text": "Deliver a compelling, fact-based summary of the evidence that proves guilt beyond a reasonable doubt.", "next": "juryDeliberationProsecutor" },
+      { "text": "Appeal to the jury's sense of public safety, emphasizing the need to 'send a message' to criminals.", "next": "closingArgumentProsecutorPublicSafety" },
+      { "text": "Dramatically accuse the defense attorney of trying to 'trick' the jury with legal technicalities.", "next": "closingArgumentProsecutorTrick" }
+    ]
+  },
+  "juryDeliberationProsecutor": {
+    "text": "You've presented your case. The judge gives the jury instructions, and they begin deliberations. All you can do now is wait.",
+    "options": [
+      { "text": "Await the jury's verdict.", "next": "prosecutorVerdict" }
+    ]
+  },
+  "prosecutorVerdict": {
+    "text": "The jury has returned with a verdict.",
+    "options": [
+      { "text": "Read the verdict.", "next": "prosecutorGuiltyVerdict" }
+    ]
+  },
+  "prosecutorGuiltyVerdict": {
+    "isEnding": true,
+    "text": "The jury returns with a verdict: **Guilty** on all counts. Justice has been served. The public cheers your success.",
+    "disbarment": {
+      "message": "YOU WON... SO YOU LOSE THE GAME!",
+      "moral": "By competently and ethically securing a conviction, you have utterly failed in your quest for a spectacular disbarment. Congratulations on your continued, successful legal career."
+    }
+  },
+  "closingArgumentProsecutorPublicSafety": {
+    "disbarment": {
+      "message": "Disbarred: For 'making improper and prejudicial arguments to the jury' and 'appealing to passion over facts.' Your closing argument, while effective in swaying the jury to convict, is deemed an unethical appeal to public emotion rather than a factual summation. The conviction is reversed on appeal, and the bar disbars you for consistently overstepping ethical boundaries.",
+      "moral": "Prosecutors must argue based on evidence, not fear or public sentiment. Appealing to a jury's emotions or urging them to 'send a message' can be considered prosecutorial misconduct, leading to reversed convictions and disbarment."
+    }
+  },
+  "closingArgumentProsecutorTrick": {
+    "disbarment": {
+      "message": "Disbarred: For 'making unfounded accusations against opposing counsel' and 'engaging in unprofessional conduct.' Your accusation that the defense attorney is trying to 'trick' the jury is a direct, unethical attack on a fellow officer of the court. The judge, enraged, holds you in contempt, and the bar disbars you for your blatant unprofessionalism and disrespect for the adversarial system.",
+      "moral": "Never accuse opposing counsel of improper motives or trickery without evidence. Personal attacks on your opponent are unprofessional and undermine the dignity of the court, leading to sanctions and disbarment."
     }
   }
 }
